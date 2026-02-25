@@ -6,15 +6,14 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...
 
 const config: Config = {
-  title: 'HanphoneJan 技术文档',
-  tagline: '技术文档与知识分享',
+  title: 'Code Training - 算法训练',
+  tagline: '系统化算法学习与知识积累',
   favicon: 'img/favicon.ico',
 
   // SEO 元信息
   customFields: {
-    keywords: ['技术文档', '前端开发', '后端开发', '嵌入式', '机器学习', 'STM32', 'React', 'Next.js'],
+    keywords: ['算法', '数据结构', 'LeetCode', '算法训练', '编程', '面试准备'],
   },
-
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -25,15 +24,14 @@ const config: Config = {
   url: 'https://hanphonejan.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
-
+  baseUrl: '/code-training/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'hanphonejan', // Usually your GitHub org/user name.
-  projectName: 'HanphoneJan.github.io', // Usually your repo name.
+  projectName: 'code-training', // Usually your repo name.
   deploymentBranch: 'gh-pages',
-
+  trailingSlash: false,
 
   onBrokenLinks: 'throw',
   onDuplicateRoutes: 'warn',
@@ -75,8 +73,9 @@ const config: Config = {
       'classic',
       {
         docs: {
-          editUrl: 'https://github.com/hanphonejan/HanphoneJan.github.io/edit/main/',
+          editUrl: 'https://github.com/hanphonejan/code-training/edit/main/',
           showLastUpdateTime: true,
+          sidebarPath: './sidebars.ts',
         },
         blog: {
           showReadingTime: true,
@@ -84,7 +83,7 @@ const config: Config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          editUrl: 'https://github.com/hanphonejan/HanphoneJan.github.io/edit/main/',
+          editUrl: 'https://github.com/hanphonejan/code-training/edit/main/',
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
@@ -104,7 +103,7 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'HanphoneJan',
+      title: 'Code Training',
       hideOnScroll: false,
       items: [
         {to: '/', label: '首页', position: 'left'},
@@ -112,11 +111,11 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'defaultSidebar',
           position: 'left',
-          label: '文档',
+          label: '题库',
         },
-        {to: '/blog', label: '博客', position: 'left'},
+        {to: '/blog', label: '学习笔记', position: 'left'},
         {
-          href: 'https://github.com/hanphonejan',
+          href: 'https://github.com/hanphonejan/code-training',
           label: 'GitHub',
           position: 'right',
           className: 'navbar-github-icon',

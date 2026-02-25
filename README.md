@@ -200,14 +200,172 @@ date_reviewed: []
 
 ## 📝 维护日志
 
-- **2026-02-25**：项目初始化，建立目录结构
+- **2026-02-25**：项目初始化
   - 创建 problems、topics、patterns、templates、review 目录
   - 添加示例题目和知识点文件
-  - 建立基本的文档结构
+  - 配置 Docusaurus 和 GitHub Pages 部署
+  - 创建 GitHub Actions 自动部署工作流
+
+## 🌐 在线访问
+
+本项目使用 Docusaurus 构建，并部署在 GitHub Pages：
+
+**网站地址**: https://hanphonejan.github.io/code-training/
+
+## 💻 本地开发
+
+### 安装依赖
+
+```bash
+pnpm install
+```
+
+### 启动开发服务器
+
+```bash
+pnpm start
+```
+
+访问 http://localhost:3001
+
+### 构建生产版本
+
+```bash
+pnpm build
+```
+
+### 预览构建结果
+
+```bash
+pnpm serve
+```
+
+### 部署前检查
+
+```bash
+# Windows
+.\scripts\check-deploy.ps1
+
+# Linux/Mac
+bash scripts/check-deploy.sh
+```
+
+## 🚀 部署到 GitHub Pages
+
+项目已配置自动部署，只需：
+
+```bash
+git add .
+git commit -m "feat: 添加新内容"
+git push origin main
+```
+
+GitHub Actions 会自动构建并部署到 GitHub Pages。
+
+**详细部署指南**: 查看 [DEPLOYMENT.md](DEPLOYMENT.md)
+
+## 📁 项目结构
+
+```
+code-training/
+├── .github/
+│   └── workflows/
+│       ├── deploy.yml          # 自动部署工作流
+│       └── test-build.yml      # PR 构建测试
+├── docs/                       # Docusaurus 文档源文件
+│   └── intro.md               # 文档首页
+├── problems/                   # 题目存档
+├── topics/                     # 知识点
+├── patterns/                   # 算法模式
+├── templates/                  # 代码模板
+├── review/                     # 复习系统
+├── scripts/                    # 辅助脚本
+│   ├── check-deploy.ps1       # 部署前检查（Windows）
+│   └── check-deploy.sh        # 部署前检查（Unix）
+├── src/                        # Docusaurus 源码
+│   ├── css/                   # 样式文件
+│   └── pages/                 # 自定义页面
+├── static/                     # 静态资源
+│   ├── .nojekyll             # GitHub Pages 配置
+│   └── img/                  # 图片资源
+├── docusaurus.config.ts       # Docusaurus 配置
+├── sidebars.ts                # 侧边栏配置
+├── package.json               # 项目依赖
+├── DEPLOYMENT.md              # 部署指南
+└── README.md                  # 本文件
+```
+
+## 🛠️ 技术栈
+
+- **框架**: [Docusaurus 3](https://docusaurus.io/)
+- **UI**: [React 19](https://react.dev/)
+- **语言**: [TypeScript](https://www.typescriptlang.org/)
+- **包管理**: [pnpm](https://pnpm.io/)
+- **部署**: GitHub Pages + GitHub Actions
+- **搜索**: @easyops-cn/docusaurus-search-local
+- **图表**: Mermaid
+
+## ⚙️ 配置说明
+
+### 修改站点信息
+
+编辑 `docusaurus.config.ts`:
+
+```typescript
+{
+  title: 'Code Training - 算法训练',
+  tagline: '系统化算法学习与知识积累',
+  url: 'https://hanphonejan.github.io',
+  baseUrl: '/code-training/',
+}
+```
+
+### 自定义导航栏
+
+编辑 `docusaurus.config.ts` 中的 `navbar` 配置。
+
+### 修改侧边栏结构
+
+编辑 `sidebars.ts` 自定义侧边栏分类和顺序。
+
+## 🔧 常用命令
+
+```bash
+# 开发
+pnpm start                 # 启动开发服务器
+pnpm build                 # 构建生产版本
+pnpm serve                 # 预览构建结果
+pnpm clear                 # 清理缓存
+
+# 类型检查
+pnpm typecheck            # 运行 TypeScript 类型检查
+
+# 部署
+pnpm deploy               # 手动部署到 GitHub Pages
+```
+
+## 📚 相关文档
+
+- [部署指南](DEPLOYMENT.md) - 详细的部署说明
+- [Git 提交规范](.github/GIT_COMMIT_GUIDE.md) - 提交信息格式
+- [Docusaurus 文档](https://docusaurus.io/) - 官方文档
 
 ## 🤝 贡献指南
 
 这是个人学习仓库，欢迎借鉴和参考。如有建议，欢迎提 Issue。
+
+### 提交规范
+
+遵循 [Conventional Commits](https://www.conventionalcommits.org/)：
+
+```bash
+feat(problems): 添加两数之和题目
+fix(topics): 修复数组知识点的链接
+docs(readme): 更新部署说明
+chore(config): 更新 Docusaurus 配置
+```
+
+详见 [Git 提交指南](.github/GIT_COMMIT_GUIDE.md)
 
 ## 📄 许可证
 
@@ -216,15 +374,6 @@ MIT License
 ---
 
 **开始你的算法之旅吧！** 🚀
-
-**使用建议：**
-- 主要使用 `docs/` 构建技术知识库
-- 使用 `blog/` 记录学习笔记和心得
-- 如果只需要文档功能，可以删除 `blog/` 目录
-
----
-
-### 添加文档（Docs）
 
 1. 在 `docs/` 目录下创建 `.md` 文件（推荐使用 Markdown 而非 MDX）
 2. 在文件开头添加 Front Matter：
