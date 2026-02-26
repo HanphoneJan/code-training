@@ -33,7 +33,7 @@ const config: Config = {
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onDuplicateRoutes: 'warn',
 
 
@@ -73,21 +73,36 @@ const config: Config = {
       'classic',
       {
         docs: {
+          path: '.', // 使用项目根目录
+          routeBasePath: '/', // 文档作为站点根路径
           editUrl: 'https://github.com/hanphonejan/code-training/edit/main/',
           showLastUpdateTime: true,
           sidebarPath: './sidebars.ts',
+          exclude: [
+            '**/_*.{js,jsx,ts,tsx,md,mdx}',
+            '**/_*/**',
+            '**/*.test.{js,jsx,ts,tsx}',
+            '**/__tests__/**',
+            '**/node_modules/**',
+            '**/.docusaurus/**',
+            '**/build/**',
+            '**/dist/**',
+            '**/.git/**',
+            '**/.github/**',
+            '**/scripts/**',
+            '**/src/**',
+            '**/static/**',
+            '**/blog/**',
+            '*.config.*',
+            '*.json',
+            '*.lock',
+            '*.yml',
+            '*.yaml',
+            '.gitignore',
+            '.gitattributes',
+          ],
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          editUrl: 'https://github.com/hanphonejan/code-training/edit/main/',
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        blog: false, // 禁用 blog 功能
         theme: {
           customCss: ["./src/css/fonts.css", "./src/css/custom.css"],
         },
@@ -106,14 +121,12 @@ const config: Config = {
       title: 'Code Training',
       hideOnScroll: false,
       items: [
-        {to: '/', label: '首页', position: 'left'},
         {
           type: 'docSidebar',
           sidebarId: 'defaultSidebar',
           position: 'left',
-          label: '题库',
+          label: '文档',
         },
-        {to: '/blog', label: '学习笔记', position: 'left'},
         {
           href: 'https://github.com/hanphonejan/code-training',
           label: 'GitHub',

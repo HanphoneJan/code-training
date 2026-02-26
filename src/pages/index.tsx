@@ -16,7 +16,7 @@ export default function Home() {
             <Link href="/docs/intro" className={styles.heroButton}>
               开始学习
             </Link>
-            <Link href="/blog" className={styles.heroButtonSecondary}>
+            <Link href="/review/weekly_summary" className={styles.heroButtonSecondary}>
               学习笔记
             </Link>
           </div>
