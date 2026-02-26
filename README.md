@@ -29,7 +29,8 @@
 ```
 code-training/
 │
-├── problems/              # ✅ 题目存档（原子层）
+├── docs/                  # ✅ 站点内容
+│   ├── problems/          # ✅ 题目存档（原子层）
 │   ├── lc/               # LeetCode 题目
 │   │   ├── 0001_two_sum.md
 │   │   ├── 0015_three_sum.md
@@ -37,28 +38,30 @@ code-training/
 │   ├── nc/               # 牛客题目
 │   └── misc/             # 其他平台题目
 │
-├── topics/               # ✅ 知识点聚合
+│   ├── topics/            # ✅ 知识点聚合
 │   ├── array.md          # 数组
 │   ├── hash_table.md     # 哈希表
 │   ├── tree.md           # 树
 │   ├── binary_tree.md    # 二叉树
 │   └── sorting.md        # 排序
 │
-├── patterns/             # 🎯 算法模式
+│   ├── patterns/          # 🎯 算法模式
 │   ├── two_pointers.md   # 双指针
 │   ├── sliding_window.md # 滑动窗口
 │   ├── bfs.md            # 广度优先搜索
 │   ├── dfs.md            # 深度优先搜索
 │   └── hash_map.md       # 哈希映射
 │
-├── templates/            # 🛠️ 代码模板
+│   ├── templates/         # 🛠️ 代码模板
 │   ├── bfs_template.md
 │   ├── dfs_template.md
 │   └── binary_search_template.md
 │
-└── review/               # 📝 复习系统
-    ├── wrong_questions.md    # 错题本
-    └── weekly_summary.md     # 周总结
+│   └── review/            # 📝 复习系统
+│       ├── wrong_questions.md    # 错题本
+│       └── weekly_summary.md     # 周总结
+│
+└── README.md              # 仓库说明
 ```
 
 ## 🚀 快速开始
@@ -122,35 +125,6 @@ date_reviewed: []
 
 - **错题本**：`review/wrong_questions.md` - 记录错题和易错点
 - **周总结**：`review/weekly_summary.md` - 每周学习总结
-
-## 📊 学习路径
-
-### 入门阶段（基础数据结构）
-
-1. [数组](topics/array.md) + [哈希表](topics/hash_table.md)
-   - [两数之和](problems/lc/0001_two_sum.md)
-   - [三数之和](problems/lc/0015_three_sum.md)
-
-2. [字符串](topics/string.md) + [滑动窗口](patterns/sliding_window.md)
-
-3. [链表](topics/linked_list.md) + [双指针](patterns/two_pointers.md)
-
-### 进阶阶段（树和图）
-
-4. [二叉树](topics/binary_tree.md) + [DFS](patterns/dfs.md) + [BFS](patterns/bfs.md)
-   - [二叉树的层序遍历](problems/lc/0102_level_order.md)
-
-5. [二叉搜索树](topics/bst.md)
-
-6. [图](topics/graph.md)
-
-### 高级阶段（算法思想）
-
-7. [回溯](patterns/backtracking.md)
-
-8. [动态规划](topics/dynamic_programming.md)
-
-9. [贪心](topics/greedy.md)
 
 ## 🎯 使用原则
 
@@ -347,7 +321,7 @@ pnpm deploy               # 手动部署到 GitHub Pages
 ## 📚 相关文档
 
 - [部署指南](DEPLOYMENT.md) - 详细的部署说明
-- [Git 提交规范](.github/GIT_COMMIT_GUIDE.md) - 提交信息格式
+- [Git 提交规范](https://github.com/hanphonejan/code-training/blob/main/.github/GIT_COMMIT_GUIDE.md) - 提交信息格式
 - [Docusaurus 文档](https://docusaurus.io/) - 官方文档
 
 ## 🤝 贡献指南
@@ -365,7 +339,7 @@ docs(readme): 更新部署说明
 chore(config): 更新 Docusaurus 配置
 ```
 
-详见 [Git 提交指南](.github/GIT_COMMIT_GUIDE.md)
+详见 [Git 提交指南](https://github.com/hanphonejan/code-training/blob/main/.github/GIT_COMMIT_GUIDE.md)
 
 ## 📄 许可证
 

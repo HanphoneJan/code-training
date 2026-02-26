@@ -11,16 +11,15 @@ export default function Home() {
       <main className={styles.hero}>
         <div className={styles.heroContainer}>
           <h1 className={styles.title}>算法训练知识库</h1>
-          <p className={styles.subtitle}>题目库、知识点、模式与模板的系统化整理</p>
+          <p className={styles.subtitle}>以题目为入口，串联知识点、算法模式和模板。</p>
           <div className={styles.buttons}>
             <Link href="/category/-题目库" className={styles.heroButton}>
               进入题目库
             </Link>
             <Link href="/category/-复习系统" className={styles.heroButtonSecondary}>
-              复习总结
+              进入复习系统
             </Link>
           </div>
-          
         </div>
       </main>
     </Layout>

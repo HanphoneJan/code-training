@@ -110,9 +110,9 @@ vector<vector<int>> levelOrder(TreeNode* root) {
 
 ## 相关题目
 
-- [107. 二叉树的层序遍历 II](0107_level_order_bottom.md)
-- [103. 二叉树的锯齿形层序遍历](0103_zigzag_level_order.md)
-- [199. 二叉树的右视图](0199_right_side_view.md)
+- [0107. 二叉树的层序遍历 II](107)
+- [0103. 二叉树的锯齿形层序遍历](103)
+- [0199. 二叉树的右视图](199)
 
 ## 笔记
 

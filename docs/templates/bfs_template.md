@@ -645,13 +645,13 @@ def levelOrder(root: Node) -> List[List[int]]:
 
 ## 相关资源
 
-- [BFS 模式](../patterns/bfs.md)
-- [二叉树](../topics/binary_tree.md)
-- [图](../topics/graph.md)
+- [BFS 模式](../patterns/bfs)
+- [二叉树](../topics/binary_tree)
+- [图](../topics/graph)
 
 ## 练习题目
 
-- [102. 二叉树的层序遍历](../problems/lc/0102_level_order.md)
+- [102. 二叉树的层序遍历](../problems/lc/102)
 - 岛屿数量
 - 腐烂的橘子
 - 单词接龙

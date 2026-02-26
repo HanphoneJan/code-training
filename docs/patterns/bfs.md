@@ -229,16 +229,16 @@ while queue:
 
 ## 相关知识点
 
-- [树](../topics/tree.md)
-- [二叉树](../topics/binary_tree.md)
-- [图](../topics/graph.md)
-- [DFS 模式](dfs.md)
-- [BFS 模板](../templates/bfs_template.md)
+- [树](../topics/tree)
+- [二叉树](../topics/binary_tree)
+- [图](../topics/graph)
+- [DFS 模式](dfs)
+- [BFS 模板](../templates/bfs_template)
 
 ## 练习题目
 
 **简单：**
-- [102. 二叉树的层序遍历](../problems/lc/0102_level_order.md)
+- [102. 二叉树的层序遍历](../problems/lc/102)
 - N 叉树的层序遍历
 
 **中等：**

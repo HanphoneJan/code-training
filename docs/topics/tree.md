@@ -126,11 +126,11 @@ def postorder(root):
 
 ## 相关知识点
 
-- [二叉树](binary_tree.md)
-- [二叉搜索树](binary_search_tree.md)
-- [DFS 模式](../patterns/dfs.md)
-- [BFS 模式](../patterns/bfs.md)
-- [递归模式](../patterns/recursion.md)
+- [二叉树](binary_tree)
+- [二叉搜索树](binary_search_tree)
+- [DFS 模式](../patterns/dfs)
+- [BFS 模式](../patterns/bfs)
+- [递归模式](../patterns/recursion)
 
 ## 题目列表
 

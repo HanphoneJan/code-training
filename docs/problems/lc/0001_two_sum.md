@@ -68,8 +68,8 @@ vector<int> twoSum(vector<int>& nums, int target) {
 
 ## 相关题目
 
-- [15. 三数之和](0015_three_sum.md)
-- [18. 四数之和](0018_four_sum.md)
+- [15. 三数之和](15)
+- [18. 四数之和](18)
 
 ## 笔记
 

@@ -73,10 +73,10 @@ const config: Config = {
       'classic',
       {
         docs: {
-          path: '.', // 使用项目根目录
+          path: './docs', // 使用 docs 目录
           routeBasePath: '/', // 文档作为站点根路径
           editUrl: 'https://github.com/hanphonejan/code-training/edit/main/',
-          showLastUpdateTime: true,
+          showLastUpdateTime: false,
           sidebarPath: './sidebars.ts',
           exclude: [
             '**/_*.{js,jsx,ts,tsx,md,mdx}',

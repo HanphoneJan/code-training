@@ -430,9 +430,9 @@ def has_path_sum(root: Optional[TreeNode], target: int) -> bool:
 
 ## 相关链接
 
-- [DFS 模式](../patterns/dfs.md)
-- [BFS 模板](bfs_template.md)
-- [回溯模式](../patterns/backtracking.md)
+- [DFS 模式](../patterns/dfs)
+- [BFS 模板](bfs_template)
+- [回溯模式](../patterns/backtracking)
 
 ## 时间与空间复杂度
 

@@ -380,8 +380,8 @@ else:
 
 ## 相关链接
 
-- [二分查找](../topics/binary_search.md)
-- [数组](../topics/array.md)
+- [二分查找](../topics/binary_search)
+- [数组](../topics/array)
 
 ## 练习题目
 

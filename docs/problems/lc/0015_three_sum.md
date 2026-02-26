@@ -76,8 +76,8 @@ def threeSum(nums: list[int]) -> list[list[int]]:
 
 ## 相关题目
 
-- [1. 两数之和](0001_two_sum.md)
-- [16. 最接近的三数之和](0016_three_sum_closest.md)
+- [1. 两数之和](1)
+- [16. 最接近的三数之和](16)
 
 ## 笔记
 

@@ -97,7 +97,7 @@ index_map = {val: idx for idx, val in enumerate(arr)}
 ## 相关知识点
 
 - [数组](array.md)
-- [字符串](string.md)
+- [字符串](string)
 - [哈希映射模式](../patterns/hash_map.md)
 
 ## 题目列表
