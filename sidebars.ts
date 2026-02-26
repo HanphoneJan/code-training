@@ -13,11 +13,6 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 const sidebars: SidebarsConfig = {
   defaultSidebar: [
     {
-      type: 'doc',
-      id: 'README',
-      label: '📖 项目介绍',
-    },
-    {
       type: 'category',
       label: '📚 题目库',
       collapsed: false,
