@@ -10,14 +10,14 @@ export default function Home() {
     <Layout title={siteConfig.title} description={siteConfig.tagline}>
       <main className={styles.hero}>
         <div className={styles.heroContainer}>
-          <h1 className={styles.title}>Code Training</h1>
-          <p className={styles.subtitle}>系统化算法学习 · 长期知识积累</p>
+          <h1 className={styles.title}>算法训练知识库</h1>
+          <p className={styles.subtitle}>题目库、知识点、模式与模板的系统化整理</p>
           <div className={styles.buttons}>
             <Link href="/category/-题目库" className={styles.heroButton}>
-              开始学习
+              进入题目库
             </Link>
-            <Link href="/review/weekly_summary" className={styles.heroButtonSecondary}>
-              学习笔记
+            <Link href="/category/-复习系统" className={styles.heroButtonSecondary}>
+              复习总结
             </Link>
           </div>
           

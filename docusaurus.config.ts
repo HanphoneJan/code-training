@@ -122,10 +122,29 @@ const config: Config = {
       hideOnScroll: false,
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'defaultSidebar',
+          to: '/category/-%E9%A2%98%E7%9B%AE%E5%BA%93',
+          label: '题目库',
           position: 'left',
-          label: '文档',
+        },
+        {
+          to: '/category/-%E7%9F%A5%E8%AF%86%E7%82%B9',
+          label: '知识点',
+          position: 'left',
+        },
+        {
+          to: '/category/-%E7%AE%97%E6%B3%95%E6%A8%A1%E5%BC%8F',
+          label: '算法模式',
+          position: 'left',
+        },
+        {
+          to: '/category/-%E4%BB%A3%E7%A0%81%E6%A8%A1%E6%9D%BF',
+          label: '代码模板',
+          position: 'left',
+        },
+        {
+          to: '/category/-%E5%A4%8D%E4%B9%A0%E7%B3%BB%E7%BB%9F',
+          label: '复习系统',
+          position: 'left',
         },
         {
           href: 'https://github.com/hanphonejan/code-training',
