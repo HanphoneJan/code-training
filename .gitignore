@@ -24,3 +24,5 @@ yarn-error.log*
 .cursor
 .obsidian
 .minimax
+
+__pycache__/
