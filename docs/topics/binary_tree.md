@@ -149,6 +149,119 @@ def traverse(root):
 
 使用回溯 + DFS。
 
+## DFS 的两种思路
+
+### 自顶向下 DFS（先序遍历）
+
+在「递」的过程中维护值，从根节点向下传递信息。
+
+```python
+# 求二叉树最大深度（自顶向下思路）
+def maxDepth(self, root: Optional[TreeNode]) -> int:
+    if not root:
+        return 0
+    # 当前节点深度 = 1 + max(左子树深度, 右子树深度)
+    return self.maxDepth(root.left) + self.maxDepth(root.right) + 1
+```
+
+### 自底向上 DFS（后序遍历）
+
+在「归」的过程中计算，先递归处理子节点，再处理当前节点。
+
+```python
+# 合并二叉树
+def mergeTrees(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
+    if root1 is None:
+        return root2
+    if root2 is None:
+        return root1
+    return TreeNode(
+        root1.val + root2.val,
+        self.mergeTrees(root1.left, root2.left),
+        self.mergeTrees(root1.right, root2.right)
+    )
+```
+
+## 二叉搜索树（BST）
+
+### 性质
+
+- 节点的左子树仅包含键**小于**节点键的节点
+- 节点的右子树仅包含键**大于**节点键的节点
+- 左右子树也必须是二叉搜索树
+
+**平衡的二叉搜索树插入、查找的时间复杂度都是 O(logn)**
+
+### 验证 BST
+
+```python
+def isValidBST(self, root: Optional[TreeNode], left=float('-inf'), right=float('inf')) -> bool:
+    if root is None:
+        return True
+    x = root.val
+    return left < x < right and \
+           self.isValidBST(root.left, left, x) and \
+           self.isValidBST(root.right, x, right)
+```
+
+### BST 转累加树
+
+遍历顺序：**右 → 根 → 左**（降序遍历）
+
+```python
+def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+    s = 0
+    def dfs(node: TreeNode) -> None:
+        if node is None:
+            return
+        dfs(node.right)  # 先遍历右子树
+        nonlocal s
+        s += node.val
+        node.val = s
+        dfs(node.left)
+    dfs(root)
+    return root
+```
+
+### 有序数组转平衡 BST
+
+**关键**：BST 中序遍历后变成升序数组！
+
+```python
+def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+    def dfs(left, right):
+        if left > right:
+            return None
+        mid = left + (right - left) // 2
+        root = TreeNode(nums[mid])
+        root.left = dfs(left, mid - 1)
+        root.right = dfs(mid + 1, right)
+        return root
+    return dfs(0, len(nums) - 1)
+```
+
+## 二叉树与链表
+
+### 二叉树展开为链表
+
+```python
+def flatten(self, root: TreeNode) -> None:
+    """将二叉树原地展开为链表（使用先右后左的前序遍历）"""
+    curr = root
+    while curr:
+        if curr.left:
+            # 找到左子树的最右节点
+            predecessor = curr.left
+            while predecessor.right:
+                predecessor = predecessor.right
+            # 将右子树接到最右节点
+            predecessor.right = curr.right
+            # 左子树移到右边
+            curr.right = curr.left
+            curr.left = None
+        curr = curr.right
+```
+
 ## 相关知识点
 
 - [树](tree.md)

@@ -421,7 +421,7 @@ arr = np.zeros((3, 4))
 diff\[i] = nums\[i] - nums\[i-1]
 **从左到右累加 diff 中的元素，可以得到数组 nums。**
 **把 a 的子数组 a\[i],a\[i+1],…,\[j] 都加上 x 等价于 把 d\[i] 增加 x，把 d\[j+1] 减少 x。**
-![](https://hanphone.top/gh/HanphoneJan/public_pictures/learn/Leetcode%E5%B7%AE%E5%88%86%E6%95%B0%E7%BB%84%E7%A4%BA%E4%BE%8B.webp)
+
 
 #### 例题—与车相交的点
 [2848. 与车相交的点 - 力扣（LeetCode）](https://leetcode.cn/problems/points-that-intersect-with-cars/description/)

@@ -45,6 +45,45 @@ last_updated: 2026-02-25
 - Trie（前缀树）
 - 线段树
 - 树状数组
+- B树 / B+树（数据库索引）
+
+**B树**：平衡多路搜索树，每个节点最多有m个子节点，适用于磁盘索引场景（减少I/O次数）。
+
+**B+树**：所有叶子节点包含全部关键字及指向数据的指针，且叶子节点按顺序链接（便于范围查询），数据库索引常用。
+
+## N叉树
+
+N叉树没有中序遍历的概念，只有前序、后序和层序遍历。
+
+```python
+# N叉树节点定义
+class Node:
+    def __init__(self, val=0, children=None):
+        self.val = val
+        self.children = children if children else []
+
+# N叉树前序遍历
+def preorder(self, root: 'Node') -> List[int]:
+    res = []
+    if root is None:
+        return res
+    res.append(root.val)
+    for child in root.children:
+        res += self.preorder(child)
+    return res
+
+# N叉树前序遍历（迭代）
+def preorder(self, root: 'Node') -> List[int]:
+    if root is None:
+        return []
+    res = []
+    stk = [root]
+    while stk:
+        node = stk.pop()
+        res.append(node.val)
+        stk.extend(reversed(node.children))  # 反转保证顺序
+    return res
+```
 
 ## 常见题型
 
@@ -103,9 +142,83 @@ def postorder(root):
 
 使用栈实现非递归遍历。
 
+**核心思想**：调用自己是"递"，return就是"归"。迭代解法本质是在模拟递归，使用Stack来模拟系统栈。
+
+| 遍历方式 | 顺序 | 根节点处理时机 | 能否 "边走边处理" |
+|---------|------|---------------|------------------|
+| 前序 | 根→左→右 | 第一次遇到根节点就处理 | ✅ 完全同步 |
+| 中序 | 左→根→右 | 左子树遍历完，第一次弹栈时处理 | ✅ 基本同步 |
+| 后序 | 左→右→根 | 左右子树都遍历完，第二次遇到根才处理 | ❌ 必须"回头处理" |
+
+```python
+# 前序遍历（迭代）
+def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+    res = []
+    stk = []
+    while root or stk:
+        while root:
+            res.append(root.val)  # 先处理根节点
+            stk.append(root)
+            root = root.left
+        root = stk.pop()
+        root = root.right
+    return res
+
+# 中序遍历（迭代）
+def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+    res = []
+    stk = []
+    while root or stk:
+        while root:
+            stk.append(root)
+            root = root.left
+        root = stk.pop()
+        res.append(root.val)  # 左子树处理完再处理根
+        root = root.right
+    return res
+
+# 后序遍历（迭代）- 使用逆前序的方法
+# 后序：左→右→根，可以看作：根→右→左 的逆序
+# 所以用类似前序的方法，但是先遍历右子树，最后反转结果
+def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+    if not root:
+        return []
+    res = []
+    stk = []
+    while root or stk:
+        while root:
+            res.append(root.val)
+            stk.append(root)
+            root = root.right  # 先遍历右子树
+        root = stk.pop()
+        root = root.left
+    return res[::-1]  # 反转得到结果
+```
+
 ### 层序遍历
 
 使用队列实现 BFS。
+
+```python
+from collections import deque
+
+def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+    if not root:
+        return []
+    res = []
+    cur = deque([root])
+    while cur:
+        level = []
+        for _ in range(len(cur)):
+            node = cur.popleft()
+            level.append(node.val)
+            if node.left:
+                cur.append(node.left)
+            if node.right:
+                cur.append(node.right)
+        res.append(level)
+    return res
+```
 
 ## 解题技巧
 
