@@ -98,3 +98,9 @@ a.navbar__link[href*="github.com"]:hover::before {
   flex-direction: row-reverse;
   gap: 8px;
 }
+
+/* 4. 隐藏导航栏外部链接的外链图标 */
+.navbar__link svg.iconExternalLink_m9IG,
+.navbar__link--external svg.iconExternalLink_m9IG {
+  display: none !important;
+}
