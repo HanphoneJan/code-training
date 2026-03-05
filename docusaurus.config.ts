@@ -121,19 +121,19 @@ const config: Config = {
       title: 'HanphoneJan',
       hideOnScroll: false,
       items: [
-        {to: 'https://hanphonejan.github.io/', label: '首页', position: 'left'},
-        {to: 'https://hanphonejan.github.io/docs/intro', label: '文档', position: 'left'},
-        {to: 'https://hanphonejan.github.io/blog', label: '博客', position: 'left'},
+        {href: 'https://hanphonejan.github.io/', label: '首页', position: 'left', target: '_self'},
+        {href: 'https://hanphonejan.github.io/docs/intro', label: '文档', position: 'left', target: '_self'},
+        {href: 'https://hanphonejan.github.io/blog', label: '博客', position: 'left', target: '_self'},
         {
           type: 'dropdown',
           label: '代码训练',
           position: 'left',
           items: [
-            {to: '/category/-%E9%A2%98%E7%9B%AE%E5%BA%93', label: '题目库'},
+            {to: '/category/-%E9%A2%98%E7%9B%AE%E5%BA%93', label: '编程题库'},
             {to: '/category/-%E7%9F%A5%E8%AF%86%E7%82%B9', label: '知识点'},
             {to: '/category/-%E7%AE%97%E6%B3%95%E6%A8%A1%E5%BC%8F', label: '算法模式'},
             {to: '/category/-%E4%BB%A3%E7%A0%81%E6%A8%A1%E6%9D%BF', label: '代码模板'},
-            {to: '/category/-%E5%A4%8D%E4%B9%A0%E7%B3%BB%E7%BB%9F', label: '复习系统'},
+            {to: '/category/-%E5%A4%8D%E4%B9%A0%E7%B3%BB%E7%BB%9F', label: '总结盘点'},
           ],
         },
         {
