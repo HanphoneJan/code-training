@@ -10,8 +10,7 @@ export default function Home() {
     <Layout title={siteConfig.title} description={siteConfig.tagline}>
       <main className={styles.hero}>
         <div className={styles.heroContainer}>
-          <h1 className={styles.title}>算法训练知识库</h1>
-          <p className={styles.subtitle}>以题目为入口，串联知识点、算法模式和模板。</p>
+          <h1 className={styles.title}>代码训练知识库</h1>
           <div className={styles.buttons}>
             <Link href="/category/-题目库" className={styles.heroButton}>
               进入题目库
