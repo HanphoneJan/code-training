@@ -100,7 +100,7 @@ a.navbar__link[href*="github.com"]:hover::before {
 }
 
 /* 4. 隐藏导航栏外部链接的外链图标 */
-.navbar__link svg.iconExternalLink_m9IG,
-.navbar__link--external svg.iconExternalLink_m9IG {
+.navbar__link svg[class^="iconExternalLink"],
+.navbar__link svg[class*="iconExternalLink"] {
   display: none !important;
 }
