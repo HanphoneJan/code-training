@@ -21,7 +21,7 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://hanphonejan.github.io',
+  url: 'https://www.hanphone.top',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/code-training/',
@@ -121,9 +121,9 @@ const config: Config = {
       title: 'HanphoneJan',
       hideOnScroll: false,
       items: [
-        {href: 'https://hanphonejan.github.io/', label: '首页', position: 'left', target: '_self'},
-        {href: 'https://hanphonejan.github.io/docs/intro', label: '文档', position: 'left', target: '_self'},
-        {href: 'https://hanphonejan.github.io/blog', label: '博客', position: 'left', target: '_self'},
+        {href: 'https://www.hanphone.top/', label: '首页', position: 'left', target: '_self'},
+        {href: 'https://www.hanphone.top/docs/intro', label: '文档', position: 'left', target: '_self'},
+        {href: 'https://www.hanphone.top/blog', label: '博客', position: 'left', target: '_self'},
         {
           type: 'dropdown',
           label: '代码训练',

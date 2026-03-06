@@ -21,7 +21,7 @@
    - 部署到 `gh-pages` 分支
 
 3. **访问站点**
-   - URL: https://hanphonejan.github.io/code-training/
+   - URL: https://www.hanphone.top/code-training/
    - 通常 2-3 分钟后生效
 
 ### 查看部署状态
@@ -76,7 +76,7 @@ GIT_USER=<你的GitHub用户名> pnpm deploy
 
 ```typescript
 {
-  url: 'https://hanphonejan.github.io',
+  url: 'https://www.hanphone.top',
   baseUrl: '/code-training/',
   organizationName: 'hanphonejan',
   projectName: 'code-training',

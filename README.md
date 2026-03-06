@@ -184,7 +184,7 @@ date_reviewed: []
 
 本项目使用 Docusaurus 构建，并部署在 GitHub Pages：
 
-**网站地址**: https://hanphonejan.github.io/code-training/
+**网站地址**: https://www.hanphone.top/code-training/
 
 ## 💻 本地开发
 
@@ -289,7 +289,7 @@ code-training/
 {
   title: 'Code Training - 算法训练',
   tagline: '系统化算法学习与知识积累',
-  url: 'https://hanphonejan.github.io',
+  url: 'https://www.hanphone.top',
   baseUrl: '/code-training/',
 }
 ```
