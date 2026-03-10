@@ -98,7 +98,7 @@ while left < right:
 - [15. 三数之和](../problems/lc/0015_three_sum.md)
 
 **困难：**
-- TBD
+- [4. 寻找两个正序数组的中位数](../problems/lc/0004_median_of_two_sorted_arrays.md)
 
 ## 学习资源
 
