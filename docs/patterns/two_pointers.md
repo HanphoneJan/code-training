@@ -53,7 +53,7 @@ def two_pointer_opposite(arr):
 ```
 
 **应用题目：**
-- [15. 三数之和](../problems/lc/0015_three_sum.md)
+- TBD
 - 两数之和 II（有序数组）
 - 盛最多水的容器
 
@@ -187,7 +187,7 @@ def removeDuplicates(nums):
 - 反转字符串
 
 **中等：**
-- [15. 三数之和](../problems/lc/0015_three_sum.md)
+- TBD
 - 盛最多水的容器
 - 长度最小的子数组
 

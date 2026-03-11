@@ -22,54 +22,16 @@ last_updated: 2026-02-25
 
 ### 示例
 
-#### [15. 三数之和](../problems/lc/0015_three_sum.md)
+#### TBD
 
-- **日期**：2026-02-25
+- **日期**：YYYY-MM-DD
 - **错误原因**：
-  - 没有处理去重逻辑
-  - 忘记跳过重复元素
-- **知识点**：双指针、去重
+  - 原因1
+  - 原因2
+- **知识点**：
 - **易错点**：
-  - 需要在三个地方去重：外层循环、左指针、右指针
-  - 跳过重复元素的条件是 `i > 0 && nums[i] == nums[i-1]`
 - **复习次数**：0
 - **掌握状态**：❌ 未掌握
-
-**正确做法：**
-
-```python
-def threeSum(nums):
-    nums.sort()
-    result = []
-    
-    for i in range(len(nums) - 2):
-        # 去重：跳过重复元素
-        if i > 0 and nums[i] == nums[i - 1]:
-            continue
-        
-        left, right = i + 1, len(nums) - 1
-        
-        while left < right:
-            total = nums[i] + nums[left] + nums[right]
-            
-            if total == 0:
-                result.append([nums[i], nums[left], nums[right]])
-                
-                # 去重
-                while left < right and nums[left] == nums[left + 1]:
-                    left += 1
-                while left < right and nums[right] == nums[right - 1]:
-                    right -= 1
-                
-                left += 1
-                right -= 1
-            elif total < 0:
-                left += 1
-            else:
-                right -= 1
-    
-    return result
-```
 
 ---
 

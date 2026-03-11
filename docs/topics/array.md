@@ -39,7 +39,6 @@ last_updated: 2026-02-25
 
 **相关题目：**
 - [1. 两数之和](../problems/lc/0001_two_sum.md)
-- [15. 三数之和](../problems/lc/0015_three_sum.md)
 
 ### 2. 滑动窗口
 
@@ -95,7 +94,7 @@ while left < right:
 - [1. 两数之和](../problems/lc/0001_two_sum.md)
 
 **中等：**
-- [15. 三数之和](../problems/lc/0015_three_sum.md)
+- TBD
 
 **困难：**
 - [4. 寻找两个正序数组的中位数](../problems/lc/0004_median_of_two_sorted_arrays.md)

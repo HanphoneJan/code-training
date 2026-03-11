@@ -25,10 +25,8 @@ last_updated: 2026-02-25
 #### LeetCode
 
 - [x] [1. 两数之和](../problems/lc/0001_two_sum.md)
-- [x] [15. 三数之和](../problems/lc/0015_three_sum.md)
-- [x] [102. 二叉树的层序遍历](../problems/lc/0102_level_order.md)
 
-**统计**：3 题（简单 1，中等 2，困难 0）
+**统计**：1 题（简单 1，中等 0，困难 0）
 
 ### 学到的知识点
 

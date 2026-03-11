@@ -101,7 +101,7 @@ def levelOrder(root):
 - 之字形遍历
 
 **相关题目：**
-- [102. 二叉树的层序遍历](../problems/lc/0102_level_order.md)
+- TBD
 
 ### 3. 路径问题
 
@@ -273,7 +273,7 @@ def flatten(self, root: TreeNode) -> None:
 ## 题目列表
 
 **中等：**
-- [102. 二叉树的层序遍历](../problems/lc/0102_level_order.md)
+- TBD
 
 ## 重点提示
 

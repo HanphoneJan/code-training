@@ -32,9 +32,7 @@ code-training/
 ├── docs/                  # ✅ 站点内容
 │   ├── problems/          # ✅ 题目存档（原子层）
 │   ├── lc/               # LeetCode 题目
-│   │   ├── 0001_two_sum.md
-│   │   ├── 0015_three_sum.md
-│   │   └── 0102_level_order.md
+│   │   └── 0001_two_sum.md
 │   ├── nc/               # 牛客题目
 │   └── misc/             # 其他平台题目
 │

@@ -62,7 +62,7 @@ last_updated: 2026-02-25
 - 部分排序
 
 **相关题目：**
-- [15. 三数之和](../problems/lc/0015_three_sum.md)
+- TBD
 
 ## 快速排序模板
 
@@ -96,4 +96,4 @@ def partition(arr, left, right):
 ## 题目列表
 
 **中等：**
-- [15. 三数之和](../problems/lc/0015_three_sum.md)
+- TBD
