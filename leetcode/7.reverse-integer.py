@@ -12,7 +12,7 @@
 # @lc code=start
 class Solution:
     def reverse(self, x: int) -> int:
-        INT_MAX, INT_MIN = 2147483647, -2147483648
+        # INT_MAX, INT_MIN = 2147483647, -2147483648
         res = 0
         while x != 0:
             digit = x % 10 if x > 0 else x % -10  # Python取模结果带符号
