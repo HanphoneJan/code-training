@@ -27,4 +27,7 @@ yarn-error.log*
 
 __pycache__/
 
+#leetocde插件
 .lcpr_data/
+#python虚拟环境
+.venv 
