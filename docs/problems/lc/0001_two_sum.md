@@ -15,7 +15,6 @@ patterns:
 date_added: 2026-02-25
 date_reviewed: []
 ---
-
 # 0001. 两数之和
 
 ## 题目描述
@@ -48,22 +47,6 @@ def twoSum(nums: list[int], target: int) -> list[int]:
             return [hashmap[complement], i]
         hashmap[num] = i
     return []
-```
-
-### C++
-
-```cpp
-vector<int> twoSum(vector<int>& nums, int target) {
-    unordered_map<int, int> hashmap;
-    for (int i = 0; i < nums.size(); i++) {
-        int complement = target - nums[i];
-        if (hashmap.find(complement) != hashmap.end()) {
-            return {hashmap[complement], i};
-        }
-        hashmap[nums[i]] = i;
-    }
-    return {};
-}
 ```
 
 ## 相关题目
