@@ -11,7 +11,7 @@
 
 # @lc code=start
 from typing import List
-
+# 相向双指针
 class Solution:
     def maxArea(self, height: List[int]) -> int:
         """
