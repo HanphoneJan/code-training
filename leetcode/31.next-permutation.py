@@ -14,30 +14,46 @@ from typing import List
 
 class Solution:
     def nextPermutation(self, nums: List[int]) -> None:
+        """
+        核心思想：三步法找下一个排列
+
+        下一个排列的定义：字典序比当前排列大的最小排列。
+        例如 [1,2,3] 的下一个是 [1,3,2]，[3,2,1] 的下一个是 [1,2,3]（循环）。
+
+        三步法：
+        1. 从右向左找第一个"下降点" i：nums[i] < nums[i+1]
+           （说明 i 右边的子数组是降序的，交换 i 处的数字可以让排列变大）
+        2. 从右向左找 i 右边最小的比 nums[i] 大的数 j，交换 nums[i] 和 nums[j]
+           （交换后，排列在 i 处变大了，但要让整体尽可能小，所以选最小的大数）
+        3. 反转 i+1 到末尾的部分（使其变为升序，得到最小的后缀）
+        """
         n = len(nums)
 
-        # 第一步：从右向左找到第一个小于右侧相邻数字的数 nums[i]
+        # 第一步：从右向左找第一个"下降点" i（nums[i] < nums[i+1]）
+        # 数组右侧是降序的，找到第一个破坏降序的位置
         i = n - 2
         while i >= 0 and nums[i] >= nums[i + 1]:
             i -= 1
 
-        # 如果找到了，进入第二步；否则跳过第二步，反转整个数组
+        # 如果找到下降点，执行第二步；否则整个数组是降序，直接跳到第三步反转整个数组
         if i >= 0:
-            # 第二步：从右向左找到 nums[i] 右边最小的大于 nums[i] 的数 nums[j]
+            # 第二步：从右向左找 nums[i] 右边最小的比 nums[i] 大的数 nums[j]
+            # 由于 i+1 到末尾是降序的，从右往左找到的第一个大于 nums[i] 的数就是最小的
             j = n - 1
             while nums[j] <= nums[i]:
                 j -= 1
-            # 交换 nums[i] 和 nums[j]
+            # 交换 nums[i] 和 nums[j]，使排列在 i 处变大
             nums[i], nums[j] = nums[j], nums[i]
 
-        # 第三步：反转 nums[i+1:]（如果上面跳过第二步，此时 i = -1）
-        # nums[i+1:] = nums[i+1:][::-1] 这样写也可以，但空间复杂度不是 O(1) 的,会创建副本
+        # 第三步：反转 i+1 到末尾的部分，使其从降序变为升序（得到最小的后缀）
+        # 注意：若第一步未找到 i（整个数组降序），此时 i = -1，反转整个数组
+        # 原地双指针反转，空间复杂度 O(1)
+        # （不用 nums[i+1:] = nums[i+1:][::-1]，因为切片赋值会创建临时副本）
         left, right = i + 1, n - 1
-        while left < right: #完美地实现了原地反转
+        while left < right:  # 双指针从两端向中间交换，实现原地反转
             nums[left], nums[right] = nums[right], nums[left]
             left += 1
             right -= 1
-        # nums[i+1:].reverse()，这样写最终也会创建一个新的副本列表，不会影响原列表
             
 # @lc code=end
 

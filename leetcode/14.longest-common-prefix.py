@@ -14,18 +14,36 @@ from typing import List
 
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
+        """
+        核心思想：以第一个字符串为基准，逐列比较所有字符串的同一位置字符
+
+        策略：
+        - 取 strs[0] 的第 i 个字符作为基准
+        - 遍历所有字符串，检查第 i 个字符是否相同
+        - 如果某字符串第 i 个字符不同，或已到达末尾，直接返回当前前缀
+
+        时间复杂度：O(m*n)，m 是最短字符串长度，n 是字符串数量
+        空间复杂度：O(1)
+        """
+        # 边界：空列表无公共前缀
         if not strs:
             return ""
         ans = ""
         i = 0
-        # 完全没有必要用while，外层直接用strs[0]会更清晰，我是大傻瓜
+        # 注意：用 while True 而非 for 是为了手动控制退出时机
+        # （更清晰的写法可以直接遍历 strs[0] 的每个字符）
         while True:
-            if i<len(strs[0]):
+            # 取第一个字符串的第 i 个字符作为比较基准
+            if i < len(strs[0]):
                 word = strs[0][i]
+            # 逐一检查所有字符串的第 i 个位置
             for str in strs:
-                if i>=len(str) or str[i] != word:
+                # 终止条件1：某字符串已到末尾（长度不足 i+1）
+                # 终止条件2：某字符串第 i 个字符与基准不匹配
+                if i >= len(str) or str[i] != word:
                     return ans
-            ans += strs[0][i] 
+            # 所有字符串的第 i 个字符都相同，加入公共前缀
+            ans += strs[0][i]
             i += 1
 
             
