@@ -74,3 +74,37 @@ class Solution:
 
 #
 
+
+if __name__ == "__main__":
+    import sys
+
+    def _run_tests(cases):
+        passed = 0
+        for desc, func, expected in cases:
+            try:
+                got = func()
+            except Exception as e:
+                got = f"ERROR: {e}"
+            ok = got == expected
+            passed += ok
+            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
+            if not ok:
+                print(f"         Expected : {expected}")
+                print(f"         Got      : {got}")
+        print(f"\n  {passed}/{len(cases)} passed")
+        sys.exit(0 if passed == len(cases) else 1)
+
+    sol = Solution()
+
+    def _next(arr):
+        sol.nextPermutation(arr)
+        return arr
+
+    _run_tests([
+        ("[1,2,3] -> [1,3,2]", lambda: _next([1,2,3]),   [1,3,2]),
+        ("[3,2,1] -> [1,2,3]", lambda: _next([3,2,1]),   [1,2,3]),
+        ("[1,1,5] -> [1,5,1]", lambda: _next([1,1,5]),   [1,5,1]),
+        ("[1] -> [1]",         lambda: _next([1]),        [1]),
+        ("[1,3,2] -> [2,1,3]", lambda: _next([1,3,2]),   [2,1,3]),
+        ("[2,3,1] -> [3,1,2]", lambda: _next([2,3,1]),   [3,1,2]),
+    ])

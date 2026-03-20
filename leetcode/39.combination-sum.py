@@ -73,3 +73,36 @@ class Solution:
 
 #
 
+
+if __name__ == "__main__":
+    import sys
+
+    def _run_tests(cases):
+        passed = 0
+        for desc, func, expected in cases:
+            try:
+                got = func()
+            except Exception as e:
+                got = f"ERROR: {e}"
+            ok = got == expected
+            passed += ok
+            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
+            if not ok:
+                print(f"         Expected : {expected}")
+                print(f"         Got      : {got}")
+        print(f"\n  {passed}/{len(cases)} passed")
+        sys.exit(0 if passed == len(cases) else 1)
+
+    sol = Solution()
+
+    def _norm(r):
+        return sorted([sorted(c) for c in r])
+
+    _run_tests([
+        ("[2,3,6,7],7", lambda: _norm(sol.combinationSum([2,3,6,7],7)),
+                         [[2,2,3],[7]]),
+        ("[2,3,5],8",   lambda: _norm(sol.combinationSum([2,3,5],8)),
+                         [[2,2,2,2],[2,3,3],[3,5]]),
+        ("[2],1 -> []", lambda: _norm(sol.combinationSum([2],1)),    []),
+        ("[1],1",       lambda: _norm(sol.combinationSum([1],1)),     [[1]]),
+    ])

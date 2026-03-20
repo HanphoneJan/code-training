@@ -119,3 +119,32 @@ class Solution:
 # @lcpr case=end
 
 #
+
+if __name__ == "__main__":
+    import sys
+
+    def _run_tests(cases):
+        passed = 0
+        for desc, func, expected in cases:
+            try:
+                got = func()
+            except Exception as e:
+                got = f"ERROR: {e}"
+            ok = got == expected
+            passed += ok
+            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
+            if not ok:
+                print(f"         Expected : {expected}")
+                print(f"         Got      : {got}")
+        print(f"\n  {passed}/{len(cases)} passed")
+        sys.exit(0 if passed == len(cases) else 1)
+
+    sol = Solution()
+    _run_tests([
+        ("babad -> 长度3的回文",  lambda: len(sol.longestPalindrome("babad")),    3),
+        ("cbbd -> bb",            lambda: sol.longestPalindrome("cbbd"),          "bb"),
+        ("a -> a",                lambda: sol.longestPalindrome("a"),             "a"),
+        ("ac -> 长度1",           lambda: len(sol.longestPalindrome("ac")),       1),
+        ("racecar -> racecar",    lambda: sol.longestPalindrome("racecar"),       "racecar"),
+        ("abacaba -> abacaba",    lambda: sol.longestPalindrome("abacaba"),       "abacaba"),
+    ])

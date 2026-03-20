@@ -17,6 +17,16 @@
 #         self.next = next
 from typing import Optional
 
+
+# ACM 模式兼容：在非 LeetCode 环境下定义 ListNode（LeetCode 环境已预定义）
+try:
+    ListNode
+except NameError:
+    class ListNode:
+        def __init__(self, val=0, next=None):
+            self.val = val
+            self.next = next
+
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
         """
@@ -128,3 +138,52 @@ class Solution:
 # @lcpr case=end
 
 #
+
+if __name__ == "__main__":
+
+    def _to_list(node):
+        res = []
+        while node:
+            res.append(node.val)
+            node = node.next
+        return res
+
+    def _to_node(arr):
+        if not arr:
+            return None
+        head = ListNode(arr[0])
+        cur = head
+        for v in arr[1:]:
+            cur.next = ListNode(v)
+            cur = cur.next
+        return head
+    import sys
+
+    def _run_tests(cases):
+        passed = 0
+        for desc, func, expected in cases:
+            try:
+                got = func()
+            except Exception as e:
+                got = f"ERROR: {e}"
+            ok = got == expected
+            passed += ok
+            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
+            if not ok:
+                print(f"         Expected : {expected}")
+                print(f"         Got      : {got}")
+        print(f"\n  {passed}/{len(cases)} passed")
+        sys.exit(0 if passed == len(cases) else 1)
+
+    sol = Solution()
+
+    def _merge(a, b):
+        return _to_list(sol.mergeTwoLists(_to_node(a), _to_node(b)))
+
+    _run_tests([
+        ("[1,2,4]+[1,3,4]", lambda: _merge([1,2,4],[1,3,4]), [1,1,2,3,4,4]),
+        ("[]+[]",           lambda: _merge([],[]),            []),
+        ("[]+[0]",          lambda: _merge([],[0]),           [0]),
+        ("[1]+[2]",         lambda: _merge([1],[2]),          [1,2]),
+        ("[2]+[1]",         lambda: _merge([2],[1]),          [1,2]),
+    ])

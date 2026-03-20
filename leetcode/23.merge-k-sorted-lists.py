@@ -17,6 +17,16 @@
 #         self.next = next
 from typing import List,Optional
 
+
+# ACM 模式兼容：在非 LeetCode 环境下定义 ListNode（LeetCode 环境已预定义）
+try:
+    ListNode
+except NameError:
+    class ListNode:
+        def __init__(self, val=0, next=None):
+            self.val = val
+            self.next = next
+
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         """
@@ -93,3 +103,53 @@ class Solution:
 
 #
 
+
+if __name__ == "__main__":
+
+    def _to_list(node):
+        res = []
+        while node:
+            res.append(node.val)
+            node = node.next
+        return res
+
+    def _to_node(arr):
+        if not arr:
+            return None
+        head = ListNode(arr[0])
+        cur = head
+        for v in arr[1:]:
+            cur.next = ListNode(v)
+            cur = cur.next
+        return head
+    import sys
+
+    def _run_tests(cases):
+        passed = 0
+        for desc, func, expected in cases:
+            try:
+                got = func()
+            except Exception as e:
+                got = f"ERROR: {e}"
+            ok = got == expected
+            passed += ok
+            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
+            if not ok:
+                print(f"         Expected : {expected}")
+                print(f"         Got      : {got}")
+        print(f"\n  {passed}/{len(cases)} passed")
+        sys.exit(0 if passed == len(cases) else 1)
+
+    sol = Solution()
+
+    def _mergek(arrs):
+        return _to_list(sol.mergeKLists([_to_node(a) for a in arrs]))
+
+    _run_tests([
+        ("[[1,4,5],[1,3,4],[2,6]]", lambda: _mergek([[1,4,5],[1,3,4],[2,6]]),
+                                     [1,1,2,3,4,4,5,6]),
+        ("[] -> []",                 lambda: _mergek([]),    []),
+        ("[[]] -> []",               lambda: _mergek([[]]),  []),
+        ("单链表(已升序)",            lambda: _mergek([[1,2,3]]), [1,2,3]),
+        ("两链表",                    lambda: _mergek([[1,3],[2,4]]), [1,2,3,4]),
+    ])

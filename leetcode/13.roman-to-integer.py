@@ -82,3 +82,32 @@ class Solution:
 
 #
 
+
+if __name__ == "__main__":
+    import sys
+
+    def _run_tests(cases):
+        passed = 0
+        for desc, func, expected in cases:
+            try:
+                got = func()
+            except Exception as e:
+                got = f"ERROR: {e}"
+            ok = got == expected
+            passed += ok
+            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
+            if not ok:
+                print(f"         Expected : {expected}")
+                print(f"         Got      : {got}")
+        print(f"\n  {passed}/{len(cases)} passed")
+        sys.exit(0 if passed == len(cases) else 1)
+
+    sol = Solution()
+    _run_tests([
+        ("III -> 3",          lambda: sol.romanToInt("III"),      3),
+        ("IV -> 4",           lambda: sol.romanToInt("IV"),       4),
+        ("IX -> 9",           lambda: sol.romanToInt("IX"),       9),
+        ("LVIII -> 58",       lambda: sol.romanToInt("LVIII"),    58),
+        ("MCMXCIV -> 1994",   lambda: sol.romanToInt("MCMXCIV"), 1994),
+        ("MMMCMXCIX -> 3999", lambda: sol.romanToInt("MMMCMXCIX"), 3999),
+    ])

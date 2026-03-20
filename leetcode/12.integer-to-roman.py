@@ -123,3 +123,33 @@ class Solution:
 # @lcpr case=end
 
 #
+
+if __name__ == "__main__":
+    import sys
+
+    def _run_tests(cases):
+        passed = 0
+        for desc, func, expected in cases:
+            try:
+                got = func()
+            except Exception as e:
+                got = f"ERROR: {e}"
+            ok = got == expected
+            passed += ok
+            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
+            if not ok:
+                print(f"         Expected : {expected}")
+                print(f"         Got      : {got}")
+        print(f"\n  {passed}/{len(cases)} passed")
+        sys.exit(0 if passed == len(cases) else 1)
+
+    sol = Solution()
+    _run_tests([
+        ("3749 -> MMMDCCXLIX", lambda: sol.intToRoman(3749), "MMMDCCXLIX"),
+        ("58 -> LVIII",        lambda: sol.intToRoman(58),   "LVIII"),
+        ("1994 -> MCMXCIV",    lambda: sol.intToRoman(1994), "MCMXCIV"),
+        ("4 -> IV",            lambda: sol.intToRoman(4),    "IV"),
+        ("9 -> IX",            lambda: sol.intToRoman(9),    "IX"),
+        ("40 -> XL",           lambda: sol.intToRoman(40),   "XL"),
+        ("3999 -> MMMCMXCIX",  lambda: sol.intToRoman(3999), "MMMCMXCIX"),
+    ])
