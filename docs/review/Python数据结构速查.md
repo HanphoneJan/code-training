@@ -9,7 +9,50 @@ last_updated: 2026-03-23
 
 ---
 
+## 复杂度速查总览
+
+| 操作 | list | dict / set | deque | heapq |
+|---|---|---|---|---|
+| 随机访问 `a[i]` | O(1) | — | O(n) | O(1) 仅堆顶 |
+| 末尾增删 | O(1) 均摊 | — | O(1) | O(log n) |
+| **头部增删** | **O(n)** | — | **O(1)** | — |
+| 中间插入/删除 | O(n) | — | O(n) | — |
+| `val in 容器` | **O(n)** 线性扫描 | **O(1)** 均摊 | O(n) | — |
+| 排序 `.sort()` | O(n log n) | — | — | O(n log n) |
+| 原地堆化 `heapify` | — | — | — | **O(n)** |
+| 二分查找 `bisect` | O(log n) | — | — | — |
+| 构建 `Counter/dict` | — | O(n) | — | — |
+
+> **核心结论**：判断"某元素是否存在"，用 `set` / `dict`（O(1)）而非 `list`（O(n)）。
+
+---
+
 ## 字符串 str
+
+### 底层实现
+
+CPython 中字符串是**不可变的 Unicode 字符序列**，根据字符范围自动选择存储方式：
+- Latin-1 范围（≤ U+00FF）→ 每字符 1 字节
+- BMP 范围（≤ U+FFFF）→ 每字符 2 字节
+- 全 Unicode → 每字符 4 字节
+
+不可变意味着**任何修改操作都会创建新字符串**，因此循环拼接字符串要用 `''.join(list)` 而非 `+=`（后者是 O(n²)）。
+
+```
+# 为什么 join 比 += 快？
+# s += x 每次都要申请新内存、复制旧内容 → 累计 O(n²)
+# ''.join(parts) 先算总长度、一次申请、一次写入 → O(n)
+```
+
+| 操作 | 时间复杂度 | 说明 |
+|---|---|---|
+| `s[i]` 索引 | O(1) | 直接偏移计算 |
+| `s[a:b]` 切片 | O(k) k=切片长度 | 创建新字符串 |
+| `s1 + s2` 拼接 | O(n+m) | 创建新字符串 |
+| `sub in s` | O(n·m) 最坏 | CPython用优化过的Boyer-Moore-Horspool |
+| `s.find/index` | O(n·m) 最坏 | 同上 |
+| `s.split/join` | O(n) | 线性扫描 |
+| `s.replace` | O(n) | 线性扫描 + 新建 |
 
 ### 常用方法
 
@@ -92,7 +135,48 @@ eval("'hello'.upper()")      # => 'HELLO'
 
 ## 列表 list
 
-> Python列表底层是**动态数组**，随机访问 O(1)，末尾增删 O(1)，中间增删 O(n)。
+### 底层实现
+
+CPython 中 list 是**动态数组（array of pointers）**，存储的是指向 PyObject 的指针数组，而非元素本身。
+
+**扩容策略**（不是翻倍，而是 ~1.125 倍）：
+```
+新容量 = 旧容量 + (旧容量 >> 3) + (旧容量 < 9 ? 3 : 6)
+# 即：0→4→8→16→25→35→46→58→72→88...
+```
+均摊下来 `append` 是 O(1)。每次扩容需复制所有指针，代价是 O(n)，但触发频率低。
+
+**`val in lst` 的实现**：逐一比较每个元素（先比地址，相同则返回 True；否则调用 `__eq__`），最坏 O(n)，找不到时必须扫完全部。
+
+```python
+# 演示：list 的 in 是 O(n) 线性扫描
+lst = list(range(10_000_000))
+val = 9_999_999
+
+# 慢：O(n)
+val in lst          # ~100ms
+
+# 快：O(1)，先转 set
+s = set(lst)        # O(n) 一次性构建
+val in s            # ~50ns
+```
+
+| 操作 | 时间复杂度 | 说明 |
+|---|---|---|
+| `lst[i]` | O(1) | 指针偏移，极快 |
+| `lst.append(x)` | O(1) 均摊 | 偶尔触发 O(n) 扩容 |
+| `lst.pop()` | O(1) | 尾部，无需移动 |
+| `lst.insert(0, x)` | **O(n)** | 所有元素右移 |
+| `lst.pop(0)` | **O(n)** | 所有元素左移 |
+| `lst.remove(x)` | O(n) | 先查找 O(n)，再移动 O(n) |
+| `x in lst` | **O(n)** | 线性扫描，无哈希 |
+| `lst.sort()` | O(n log n) | Timsort，稳定排序 |
+| `lst.reverse()` | O(n) | 原地翻转 |
+| `lst[a:b]` | O(k) | k=切片长 |
+| `lst.count(x)` | O(n) | 全量扫描 |
+| `lst.index(x)` | O(n) | 找到即返回 |
+
+> **Timsort**：Python 的排序算法，结合归并排序与插入排序，对部分有序数据特别高效（接近 O(n)），最坏 O(n log n)，**稳定**（相等元素不改变相对顺序）。
 
 ### 常用方法
 
@@ -153,18 +237,184 @@ for a, b in zip(lst1, lst2):
 ### 切片操作
 
 ```python
-lst[start:end]        # 左闭右开区间 [start, end)
-lst[start:end:step]   # 带步长
-lst[::-1]             # 反转
-lst[::2]              # 每隔一个取一个（偶数索引）
-lst[1::2]             # 奇数索引元素
-lst[:k]               # 前k个元素
-lst[-k:]              # 后k个元素
+# --- 读取（返回新列表，原列表不变）---
+lst[start:end]        # 左闭右开 [start, end)，负索引从尾部数
+lst[start:end:step]   # 带步长，step 可为负数
+lst[:]                # 全部元素（等价于浅拷贝）
+lst[::-1]             # 整体反转
+lst[::2]              # 偶数索引元素（0,2,4,...）
+lst[1::2]             # 奇数索引元素（1,3,5,...）
+lst[:k]               # 前 k 个元素
+lst[-k:]              # 后 k 个元素
+lst[:-k]              # 去掉最后 k 个元素
+
+# --- 写入（切片赋值，原地修改）---
+lst[1:3] = [10, 20]           # 替换区间（长度可以不等！）
+lst[1:3] = []                 # 删除区间（等价于 del lst[1:3]）
+lst[1:1] = [10, 20]           # 在 index=1 处插入（不删除原元素）
+lst[::2] = [0] * len(lst[::2]) # 将所有偶数索引元素置 0
+
+# --- 常见 coding 技巧 ---
+a, b = lst[:n], lst[n:]       # 将列表分成两段
+lst[l:r+1] = lst[l:r+1][::-1] # 反转子数组 [l, r]（LeetCode 原地反转技巧）
+
+# 示例：旋转数组右移 k 位（LeetCode 189）
+def rotate(nums, k):
+    k %= len(nums)
+    nums[:] = nums[-k:] + nums[:-k]   # nums[:] 是原地修改（不新建列表引用）
+    # 不能写 nums = nums[-k:] + nums[:-k]，那样只是改了局部变量
+```
+
+### 拷贝：浅拷贝 vs 深拷贝
+
+```python
+# --- 三种等价的浅拷贝 ---
+b = lst.copy()     # 列表方法，语义最清晰
+b = lst[:]         # 切片语法，最简洁，常见于 coding
+b = list(lst)      # 构造函数，适用于任意可迭代对象
+
+# 浅拷贝只复制"第一层"，嵌套列表仍共享引用
+a = [[1, 2], [3, 4]]
+b = a.copy()       # b 是新列表，但 b[0] 和 a[0] 指向同一个 [1, 2]
+b[0].append(99)
+print(a)           # [[1, 2, 99], [3, 4]]  ← a 也变了！
+b[1] = [99]
+print(a)           # [[1, 2, 99], [3, 4]]  ← a 不变（替换整行不影响 a）
+
+# --- 深拷贝：完全独立 ---
+import copy
+b = copy.deepcopy(a)  # 递归复制所有层，b 与 a 完全独立
+
+# --- coding 中最常见的坑 ---
+path = []
+def dfs():
+    ans.append(path)        # 错误！path 是引用，后续修改会影响 ans 中的结果
+    ans.append(path[:])     # 正确：每次记录当前状态的副本
+    ans.append(list(path))  # 等价写法
+```
+
+> **何时用深拷贝？** 只有嵌套结构（列表的列表、列表的字典等）且需要完全独立时才用 `deepcopy`，代价较高（O(n) 且常数大）。大多数算法题用 `path[:]` 即可。
+
+### 算法常用技巧
+
+```python
+# --- 初始化 ---
+lst = [0] * n                          # 全 0 列表
+lst = [float('inf')] * n               # 全无穷（初始化 dp/距离数组）
+lst = list(range(n))                   # [0, 1, 2, ..., n-1]
+matrix = [[0]*cols for _ in range(rows)]  # 二维数组（每行独立！）
+
+# --- 解包 ---
+a, b, c = [1, 2, 3]                   # 直接解包
+first, *rest = lst                     # 头部 + 剩余
+*init, last = lst                      # 剩余 + 尾部
+a, *mid, b = lst                       # 首尾 + 中间
+merged = [*lst1, *lst2]                # 合并列表（等价于 lst1 + lst2）
+a, b = b, a                            # 交换两变量（Python 特有，无需 tmp）
+
+# --- 输入处理（ACM 模式）---
+n = int(input())
+lst = list(map(int, input().split()))  # 读一行整数
+matrix = [list(map(int, input().split())) for _ in range(n)]  # 读矩阵
+
+# --- 矩阵操作 ---
+# 转置矩阵（行列互换）
+transposed = list(map(list, zip(*matrix)))
+# 顺时针旋转 90°
+rotated = list(map(list, zip(*matrix[::-1])))
+# 逆时针旋转 90°
+rotated = list(map(list, zip(*matrix)))[::-1]
+
+# --- 排序技巧 ---
+lst.sort(key=lambda x: x[1])                    # 按第二元素升序
+lst.sort(key=lambda x: (-x[1], x[0]))           # 按第二元素降序，再按第一升序
+lst.sort(key=lambda x: (len(x), x))             # 按长度，再按字典序
+words.sort(key=lambda w: [ord(c)-ord('a') for c in w])  # 自定义字母顺序
+
+import functools
+lst.sort(key=functools.cmp_to_key(lambda a, b: a - b))  # 自定义比较函数
+
+# --- 常用聚合 ---
+total = sum(lst)
+total = sum(x**2 for x in lst)         # 生成器表达式，不创建中间列表
+max_val = max(lst)
+max_val = max(lst, key=lambda x: x[1]) # 按第二元素找最大
+max_val = max(lst, default=0)          # 空列表时返回 default（Python 3.4+）
+flat_sum = sum(sum(row) for row in matrix)  # 矩阵求和
+
+# --- 去重与统计 ---
+unique = list(set(lst))                # 去重（不保序）
+unique_sorted = sorted(set(lst))       # 去重并排序
+freq = {}
+for x in lst: freq[x] = freq.get(x, 0) + 1   # 手动计数
+
+# --- 双指针/滑动窗口常用 ---
+left, right = 0, len(lst) - 1         # 对撞指针初始化
+while left < right:
+    # ... 双指针逻辑 ...
+    left += 1; right -= 1
+
+# --- 前缀和（一维）---
+n = len(lst)
+prefix = [0] * (n + 1)
+for i, x in enumerate(lst):
+    prefix[i+1] = prefix[i] + x
+# 区间和 [l, r]（闭区间）
+range_sum = prefix[r+1] - prefix[l]
+
+# --- 差分数组 ---
+diff = [0] * (n + 1)
+# 区间 [l, r] 加 val：
+diff[l] += val; diff[r+1] -= val
+# 还原：
+from itertools import accumulate
+result = list(accumulate(diff))[:n]
 ```
 
 ---
 
 ## 字典 dict
+
+### 底层实现
+
+CPython 3.6+ 的 dict 是**紧凑哈希表（compact hash table）**，由两部分组成：
+- **索引数组**（稀疏）：存储哈希槽，记录"键值对在 entries 数组中的位置"
+- **entries 数组**（紧凑）：按插入顺序存储 `(hash, key, value)` 三元组
+
+这使得 dict 在 Python 3.7+ **保证插入顺序**，且内存比旧版紧凑约 20-25%。
+
+**哈希流程**：
+```
+1. 计算 hash(key) → 整数
+2. hash & (capacity-1) → 初始槽位 i（capacity 总是 2 的幂）
+3. 若槽位空 → 插入；若 hash 和 key 均相等 → 更新；否则 → 探测下一槽
+4. 探测方式：i = (5*i + 1 + perturb) % capacity  （伪随机探测，非线性探测）
+```
+
+**负载因子**：默认 2/3，超过后触发扩容（容量翻倍），重新哈希所有键。
+
+**哈希冲突**：最坏情况（所有键哈希相同）退化为 O(n)，实际中极少发生。
+
+```python
+# 为什么 key in dict 是 O(1)？
+# 1. hash(key) 计算出槽位，直接跳转 → 不需要遍历
+# 2. 只有极少数冲突需要探测 1-2 次
+d = {i: i for i in range(10_000_000)}
+999999 in d   # ~50ns，和 n=10 时几乎一样快
+```
+
+| 操作 | 时间复杂度 | 说明 |
+|---|---|---|
+| `d[key]` / `d.get(key)` | O(1) 均摊 | 哈希查找 |
+| `d[key] = val` | O(1) 均摊 | 哈希插入/更新 |
+| `del d[key]` | O(1) 均摊 | 哈希删除 |
+| `key in d` | **O(1) 均摊** | 哈希查找 |
+| `d.keys()` / `.values()` / `.items()` | O(1) | 返回视图，不复制 |
+| 遍历 `for k in d` | O(n) | 遍历 entries 数组 |
+| `d.update(other)` | O(m) m=other大小 | 逐个插入 |
+| 构建 `dict(pairs)` | O(n) | 逐个哈希插入 |
+
+> **为什么自定义类的对象默认可哈希？** Python 对象默认用 `id()`（内存地址）作为哈希值，所以任意对象都可以作为 dict 的 key。但如果定义了 `__eq__`，必须同时定义 `__hash__`（否则变为不可哈希）。
 
 ### 常用方法
 
@@ -222,6 +472,41 @@ key not in d                   # O(1)
 ---
 
 ## 集合 set
+
+### 底层实现
+
+set 和 dict 共用同一套哈希表机制，区别是 set **只存 key，不存 value**。
+
+- 底层：稀疏哈希表，槽位只存 `(hash, key)`
+- 负载因子：2/3，超过后扩容
+- **`val in set`**：计算 hash(val) → 直接定位槽位 → O(1)
+
+```python
+# list vs set 的 in 性能对比（10M 元素）
+import time
+data = list(range(10_000_000))
+s = set(data)
+target = 9_999_999
+
+# list: O(n)，约 100ms
+t0 = time.time(); _ = target in data; print(time.time()-t0)
+
+# set: O(1)，约 50ns
+t0 = time.time(); _ = target in s;    print(time.time()-t0)
+```
+
+| 操作 | 时间复杂度 | 说明 |
+|---|---|---|
+| `s.add(x)` | O(1) 均摊 | 哈希插入 |
+| `x in s` | **O(1) 均摊** | 哈希查找 |
+| `s.remove(x)` / `s.discard(x)` | O(1) 均摊 | 哈希删除 |
+| `s1 \| s2` 并集 | O(n+m) | 遍历两个集合 |
+| `s1 & s2` 交集 | O(min(n,m)) | 遍历较小集合，在较大集合中查找 |
+| `s1 - s2` 差集 | O(n) | 遍历 s1 |
+| `s1 ^ s2` 对称差 | O(n+m) | — |
+| `set(lst)` 构建 | O(n) | 逐个插入 |
+
+> **为什么 set 的交集是 O(min(n,m)) 而非 O(n+m)？** CPython 会自动选择遍历较小的集合，对每个元素在较大集合中做 O(1) 哈希查找。
 
 ### 常用方法
 
@@ -296,6 +581,8 @@ def twoSum(nums, target):
 
 ### Counter 计数器
 
+> Counter 继承自 dict，底层就是哈希表。构建 `Counter(iterable)` 是 O(n)，`most_common(k)` 是 O(n log k)（内部用堆）。
+
 ```python
 from collections import Counter
 
@@ -330,6 +617,8 @@ def isAnagram(s, t):
 ```
 
 ### defaultdict 默认字典
+
+> defaultdict 继承自 dict，复杂度与 dict 完全相同（O(1) 增删查）。唯一区别是重写了 `__missing__`：访问不存在的 key 时自动调用工厂函数创建默认值。
 
 ```python
 from collections import defaultdict
@@ -399,6 +688,37 @@ class LRUCache:
 ```
 
 ### deque 双端队列
+
+#### 底层实现
+
+deque 不是单个数组，而是**双向链表连接的固定大小块（block）数组**：
+- 每个 block 存储 64 个元素（CPython 实现）
+- 维护 leftblock/rightblock 指针和 leftindex/rightindex 偏移
+- 两端 append/pop：直接移动指针 → **严格 O(1)**（不是均摊）
+- 中间 `insert(i, x)` / 随机访问 `dq[i]`：需遍历 block 链 → **O(n)**
+
+```
+# list 与 deque 头部操作对比（10万次 appendleft）
+# list.insert(0, x)：每次把所有元素右移 → O(n²) 总
+# deque.appendleft(x)：只移动指针 → O(n) 总
+
+list: ~500ms（100万次 insert(0,x)）
+deque: ~10ms  （100万次 appendleft(x)）
+```
+
+| 操作 | 时间复杂度 | vs list |
+|---|---|---|
+| `dq.append(x)` | **O(1)** | list O(1) 均摊 |
+| `dq.appendleft(x)` | **O(1)** | list **O(n)** |
+| `dq.pop()` | **O(1)** | list O(1) |
+| `dq.popleft()` | **O(1)** | list **O(n)** |
+| `dq[i]` 随机访问 | O(n) | list O(1) |
+| `x in dq` | O(n) | list O(n) |
+| `dq.rotate(k)` | O(k) | — |
+
+> **选 list 还是 deque？**
+> 只在尾部操作 → list（随机访问更快）
+> 需要头部操作（BFS队列、滑动窗口）→ deque
 
 ```python
 from collections import deque
@@ -517,6 +837,26 @@ print(config['port'])        # 8080（从defaults取）
 
 > 只能用于**已排序的数组**，所有操作时间复杂度 O(log n)。
 
+### 底层实现
+
+纯二分搜索，无额外数据结构：
+- `bisect_left/right`：O(log n) 查找，O(1) 额外空间
+- `insort_left/right`：O(log n) 查找 + **O(n) 插入**（list 中间插入需移动元素）
+
+```
+# insort 的完整复杂度
+bisect（查找位置）: O(log n)
+list.insert（插入）: O(n)   ← 瓶颈！
+总计：O(n)
+
+若需要频繁有序插入，考虑用 SortedList（sortedcontainers 库）→ O(log n)
+```
+
+| 操作 | 时间复杂度 | 空间复杂度 |
+|---|---|---|
+| `bisect_left/right` | O(log n) | O(1) |
+| `insort_left/right` | O(n)（插入移位） | O(1) |
+
 ```python
 import bisect
 
@@ -594,6 +934,39 @@ def maximumBeauty(items, queries):
 ## heapq 堆模块
 
 > 堆是完全二叉树，用数组存储。Python的heapq实现的是**小顶堆**（最小值在堆顶）。
+
+### 底层实现
+
+堆用**数组（list）存储完全二叉树**，节点 i 的父子关系：
+```
+父节点：(i - 1) // 2
+左子节点：2 * i + 1
+右子节点：2 * i + 2
+```
+
+**核心操作**：
+- **上浮（sift up）**：插入元素到末尾，反复与父节点比较，若比父小则交换 → `heappush` O(log n)
+- **下沉（sift down）**：弹出堆顶，将末尾元素移到堆顶，反复与较小子节点交换 → `heappop` O(log n)
+
+**`heapify` 为什么是 O(n) 而非 O(n log n)？**
+```
+从最后一个非叶节点（n//2 - 1）开始向前逐个做 sift down：
+- 底层节点高度为 0，工作量少；高层节点少，工作量多
+- 数学证明：∑ (n/2^k) * k = O(n)，不是 O(n log n)
+```
+
+| 操作 | 时间复杂度 | 说明 |
+|---|---|---|
+| `heappush(h, x)` | O(log n) | sift up |
+| `heappop(h)` | O(log n) | sift down |
+| `h[0]` 查看堆顶 | **O(1)** | 不修改堆 |
+| `heapify(lst)` | **O(n)** | 非 O(n log n)！ |
+| `heappushpop(h, x)` | O(log n) | 比分开调用快（少一次 sift） |
+| `heapreplace(h, x)` | O(log n) | 同上 |
+| `nsmallest(k, lst)` | O(n log k) | 维护大小为 k 的堆 |
+| `nlargest(k, lst)` | O(n log k) | 维护大小为 k 的堆 |
+
+> **nsmallest vs sorted**：k 很小时用 nsmallest（O(n log k)）；k 接近 n 时用 sorted（O(n log n)，但常数更小）。CPython 内部也是这样判断的。
 
 | 类型     | 核心规则                   | 堆顶   |
 | -------- | -------------------------- | ------ |

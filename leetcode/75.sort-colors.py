@@ -16,26 +16,11 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        def quick_sort(arr, left, right):
-            if left >= right:
-                return
-            
-            pivot = partition(arr, left, right)
-            quick_sort(arr, left, pivot - 1)
-            quick_sort(arr, pivot + 1, right)
-
-        def partition(arr, left, right):
-            pivot = arr[right]
-            i = left - 1
-            
-            for j in range(left, right):
-                if arr[j] <= pivot:
-                    i += 1
-                    arr[i], arr[j] = arr[j], arr[i]
-            
-            arr[i + 1], arr[right] = arr[right], arr[i + 1]
-            return i + 1
-        quick_sort(nums,0,len(nums)-1)
+        # 双指针一次遍历做法
+        
+        # 题目的本意是不让用sort(不只是库内置的sort)，我原来的做法是不恰当的
+        # 计数排序，最快
+        # 快速排序：quick_sort(nums,0,len(nums)-1)
 # @lc code=end
 
 
