@@ -92,31 +92,18 @@ class Solution:
 #
 
 if __name__ == "__main__":
-    import sys
-
-    def _run_tests(cases):
-        passed = 0
-        for desc, func, expected in cases:
-            try:
-                got = func()
-            except Exception as e:
-                got = f"ERROR: {e}"
-            ok = got == expected
-            passed += ok
-            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
-            if not ok:
-                print(f"         Expected : {expected}")
-                print(f"         Got      : {got}")
-        print(f"\n  {passed}/{len(cases)} passed")
-        sys.exit(0 if passed == len(cases) else 1)
-
     sol = Solution()
-    _run_tests([
-        ("121 -> True",   lambda: sol.isPalindrome(121),  True),
-        ("-121 -> False", lambda: sol.isPalindrome(-121), False),
-        ("10 -> False",   lambda: sol.isPalindrome(10),   False),
-        ("0 -> True",     lambda: sol.isPalindrome(0),    True),
-        ("11 -> True",    lambda: sol.isPalindrome(11),   True),
-        ("1221 -> True",  lambda: sol.isPalindrome(1221), True),
-        ("1231 -> False", lambda: sol.isPalindrome(1231), False),
-    ])
+
+    tests = [
+        (121, True),
+        (-121, False),
+        (10, False),
+        (0, True),
+        (11, True),
+        (1221, True),
+        (1231, False),
+    ]
+
+    for x, expected in tests:
+        result = sol.isPalindrome(x)
+        print(f"isPalindrome({x}) = {result}, expected = {expected}")

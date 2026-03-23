@@ -122,34 +122,17 @@ if __name__ == "__main__":
             cur.next = ListNode(v)
             cur = cur.next
         return head
-    import sys
-
-    def _run_tests(cases):
-        passed = 0
-        for desc, func, expected in cases:
-            try:
-                got = func()
-            except Exception as e:
-                got = f"ERROR: {e}"
-            ok = got == expected
-            passed += ok
-            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
-            if not ok:
-                print(f"         Expected : {expected}")
-                print(f"         Got      : {got}")
-        print(f"\n  {passed}/{len(cases)} passed")
-        sys.exit(0 if passed == len(cases) else 1)
 
     sol = Solution()
 
-    def _mergek(arrs):
-        return _to_list(sol.mergeKLists([_to_node(a) for a in arrs]))
+    tests = [
+        ([[1, 4, 5], [1, 3, 4], [2, 6]], [1, 1, 2, 3, 4, 4, 5, 6]),
+        ([], []),
+        ([[]], []),
+        ([[1, 2, 3]], [1, 2, 3]),
+        ([[1, 3], [2, 4]], [1, 2, 3, 4]),
+    ]
 
-    _run_tests([
-        ("[[1,4,5],[1,3,4],[2,6]]", lambda: _mergek([[1,4,5],[1,3,4],[2,6]]),
-                                     [1,1,2,3,4,4,5,6]),
-        ("[] -> []",                 lambda: _mergek([]),    []),
-        ("[[]] -> []",               lambda: _mergek([[]]),  []),
-        ("单链表(已升序)",            lambda: _mergek([[1,2,3]]), [1,2,3]),
-        ("两链表",                    lambda: _mergek([[1,3],[2,4]]), [1,2,3,4]),
-    ])
+    for lists, expected in tests:
+        result = _to_list(sol.mergeKLists([_to_node(lst) for lst in lists]))
+        print(f"mergeKLists({lists}) = {result}, expected = {expected}")

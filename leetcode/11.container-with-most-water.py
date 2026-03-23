@@ -95,29 +95,16 @@ class Solution:
 #
 
 if __name__ == "__main__":
-    import sys
-
-    def _run_tests(cases):
-        passed = 0
-        for desc, func, expected in cases:
-            try:
-                got = func()
-            except Exception as e:
-                got = f"ERROR: {e}"
-            ok = got == expected
-            passed += ok
-            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
-            if not ok:
-                print(f"         Expected : {expected}")
-                print(f"         Got      : {got}")
-        print(f"\n  {passed}/{len(cases)} passed")
-        sys.exit(0 if passed == len(cases) else 1)
-
     sol = Solution()
-    _run_tests([
-        ("[1,8,6,2,5,4,8,3,7] -> 49", lambda: sol.maxArea([1,8,6,2,5,4,8,3,7]), 49),
-        ("[1,1] -> 1",                 lambda: sol.maxArea([1,1]),                1),
-        ("[4,3,2,1,4] -> 16",          lambda: sol.maxArea([4,3,2,1,4]),          16),
-        ("[1,2,1] -> 2",               lambda: sol.maxArea([1,2,1]),              2),
-        ("[2,3,4,5,18,17,6] -> 17",    lambda: sol.maxArea([2,3,4,5,18,17,6]),   17),
-    ])
+
+    tests = [
+        ([1, 8, 6, 2, 5, 4, 8, 3, 7], 49),
+        ([1, 1], 1),
+        ([4, 3, 2, 1, 4], 16),
+        ([1, 2, 1], 2),
+        ([2, 3, 4, 5, 18, 17, 6], 17),
+    ]
+
+    for height, expected in tests:
+        result = sol.maxArea(height)
+        print(f"maxArea({height}) = {result}, expected = {expected}")

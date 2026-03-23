@@ -71,30 +71,17 @@ class Solution:
 
 
 if __name__ == "__main__":
-    import sys
-
-    def _run_tests(cases):
-        passed = 0
-        for desc, func, expected in cases:
-            try:
-                got = func()
-            except Exception as e:
-                got = f"ERROR: {e}"
-            ok = got == expected
-            passed += ok
-            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
-            if not ok:
-                print(f"         Expected : {expected}")
-                print(f"         Got      : {got}")
-        print(f"\n  {passed}/{len(cases)} passed")
-        sys.exit(0 if passed == len(cases) else 1)
-
     sol = Solution()
-    _run_tests([
-        ("[4,5,6,7,0,1,2],0 -> 4",  lambda: sol.search([4,5,6,7,0,1,2],0),  4),
-        ("[4,5,6,7,0,1,2],3 -> -1", lambda: sol.search([4,5,6,7,0,1,2],3), -1),
-        ("[1],0 -> -1",              lambda: sol.search([1],0),              -1),
-        ("[1],1 -> 0",               lambda: sol.search([1],1),               0),
-        ("[3,1],1 -> 1",             lambda: sol.search([3,1],1),             1),
-        ("[5,1,3],3 -> 2",           lambda: sol.search([5,1,3],3),           2),
-    ])
+
+    tests = [
+        ([4, 5, 6, 7, 0, 1, 2], 0, 4),
+        ([4, 5, 6, 7, 0, 1, 2], 3, -1),
+        ([1], 0, -1),
+        ([1], 1, 0),
+        ([3, 1], 1, 1),
+        ([5, 1, 3], 3, 2),
+    ]
+
+    for nums, target, expected in tests:
+        result = sol.search(nums, target)
+        print(f"search({nums}, {target}) = {result}, expected = {expected}")

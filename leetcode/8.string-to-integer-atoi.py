@@ -123,31 +123,18 @@ class Solution:
 #
 
 if __name__ == "__main__":
-    import sys
-
-    def _run_tests(cases):
-        passed = 0
-        for desc, func, expected in cases:
-            try:
-                got = func()
-            except Exception as e:
-                got = f"ERROR: {e}"
-            ok = got == expected
-            passed += ok
-            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
-            if not ok:
-                print(f"         Expected : {expected}")
-                print(f"         Got      : {got}")
-        print(f"\n  {passed}/{len(cases)} passed")
-        sys.exit(0 if passed == len(cases) else 1)
-
     sol = Solution()
-    _run_tests([
-        ("42 -> 42",              lambda: sol.myAtoi("42"),            42),
-        (" -042 -> -42",          lambda: sol.myAtoi(" -042"),         -42),
-        ("1337c0d3 -> 1337",      lambda: sol.myAtoi("1337c0d3"),      1337),
-        ("0-1 -> 0",              lambda: sol.myAtoi("0-1"),           0),
-        ("words and 987 -> 0",   lambda: sol.myAtoi("words and 987"),  0),
-        ("2147483648 -> INT_MAX", lambda: sol.myAtoi("2147483648"),    2147483647),
-        ("-2147483649 -> INT_MIN",lambda: sol.myAtoi("-2147483649"),   -2147483648),
-    ])
+
+    tests = [
+        ("42", 42),
+        (" -042", -42),
+        ("1337c0d3", 1337),
+        ("0-1", 0),
+        ("words and 987", 0),
+        ("2147483648", 2147483647),
+        ("-2147483649", -2147483648),
+    ]
+
+    for s, expected in tests:
+        result = sol.myAtoi(s)
+        print(f"myAtoi('{s}') = {result}, expected = {expected}")

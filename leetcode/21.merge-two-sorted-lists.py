@@ -157,33 +157,17 @@ if __name__ == "__main__":
             cur.next = ListNode(v)
             cur = cur.next
         return head
-    import sys
-
-    def _run_tests(cases):
-        passed = 0
-        for desc, func, expected in cases:
-            try:
-                got = func()
-            except Exception as e:
-                got = f"ERROR: {e}"
-            ok = got == expected
-            passed += ok
-            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
-            if not ok:
-                print(f"         Expected : {expected}")
-                print(f"         Got      : {got}")
-        print(f"\n  {passed}/{len(cases)} passed")
-        sys.exit(0 if passed == len(cases) else 1)
 
     sol = Solution()
 
-    def _merge(a, b):
-        return _to_list(sol.mergeTwoLists(_to_node(a), _to_node(b)))
+    tests = [
+        ([1, 2, 4], [1, 3, 4], [1, 1, 2, 3, 4, 4]),
+        ([], [], []),
+        ([], [0], [0]),
+        ([1], [2], [1, 2]),
+        ([2], [1], [1, 2]),
+    ]
 
-    _run_tests([
-        ("[1,2,4]+[1,3,4]", lambda: _merge([1,2,4],[1,3,4]), [1,1,2,3,4,4]),
-        ("[]+[]",           lambda: _merge([],[]),            []),
-        ("[]+[0]",          lambda: _merge([],[0]),           [0]),
-        ("[1]+[2]",         lambda: _merge([1],[2]),          [1,2]),
-        ("[2]+[1]",         lambda: _merge([2],[1]),          [1,2]),
-    ])
+    for list1, list2, expected in tests:
+        result = _to_list(sol.mergeTwoLists(_to_node(list1), _to_node(list2)))
+        print(f"mergeTwoLists({list1}, {list2}) = {result}, expected = {expected}")

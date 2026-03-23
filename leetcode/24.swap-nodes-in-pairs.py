@@ -97,33 +97,17 @@ if __name__ == "__main__":
             cur.next = ListNode(v)
             cur = cur.next
         return head
-    import sys
-
-    def _run_tests(cases):
-        passed = 0
-        for desc, func, expected in cases:
-            try:
-                got = func()
-            except Exception as e:
-                got = f"ERROR: {e}"
-            ok = got == expected
-            passed += ok
-            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
-            if not ok:
-                print(f"         Expected : {expected}")
-                print(f"         Got      : {got}")
-        print(f"\n  {passed}/{len(cases)} passed")
-        sys.exit(0 if passed == len(cases) else 1)
 
     sol = Solution()
 
-    def _swap(arr):
-        return _to_list(sol.swapPairs(_to_node(arr)))
+    tests = [
+        ([1, 2, 3, 4], [2, 1, 4, 3]),
+        ([], []),
+        ([1], [1]),
+        ([1, 2], [2, 1]),
+        ([1, 2, 3], [2, 1, 3]),
+    ]
 
-    _run_tests([
-        ("[1,2,3,4] -> [2,1,4,3]", lambda: _swap([1,2,3,4]), [2,1,4,3]),
-        ("[] -> []",               lambda: _swap([]),         []),
-        ("[1] -> [1]",             lambda: _swap([1]),        [1]),
-        ("[1,2] -> [2,1]",         lambda: _swap([1,2]),      [2,1]),
-        ("[1,2,3] -> [2,1,3]",     lambda: _swap([1,2,3]),    [2,1,3]),
-    ])
+    for head, expected in tests:
+        result = _to_list(sol.swapPairs(_to_node(head)))
+        print(f"swapPairs({head}) = {result}, expected = {expected}")

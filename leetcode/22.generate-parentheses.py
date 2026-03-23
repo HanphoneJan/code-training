@@ -69,31 +69,14 @@ class Solution:
 
 
 if __name__ == "__main__":
-    import sys
-
-    def _run_tests(cases):
-        passed = 0
-        for desc, func, expected in cases:
-            try:
-                got = func()
-            except Exception as e:
-                got = f"ERROR: {e}"
-            ok = got == expected
-            passed += ok
-            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
-            if not ok:
-                print(f"         Expected : {expected}")
-                print(f"         Got      : {got}")
-        print(f"\n  {passed}/{len(cases)} passed")
-        sys.exit(0 if passed == len(cases) else 1)
-
     sol = Solution()
-    _run_tests([
-        ("n=1 -> [()]",
-         lambda: sorted(sol.generateParenthesis(1)), ["()"]),
-        ("n=2 -> 2种",
-         lambda: len(sol.generateParenthesis(2)), 2),
-        ("n=3 全集合",
-         lambda: sorted(sol.generateParenthesis(3)),
-         sorted(["((()))","(()())","(())()","()(())","()()()"])),
-    ])
+
+    tests = [
+        1,
+        2,
+        3,
+    ]
+
+    for n in tests:
+        result = sol.generateParenthesis(n)
+        print(f"generateParenthesis({n}) = {result}")

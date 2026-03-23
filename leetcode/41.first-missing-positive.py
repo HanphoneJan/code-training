@@ -65,30 +65,17 @@ class Solution:
 
 
 if __name__ == "__main__":
-    import sys
-
-    def _run_tests(cases):
-        passed = 0
-        for desc, func, expected in cases:
-            try:
-                got = func()
-            except Exception as e:
-                got = f"ERROR: {e}"
-            ok = got == expected
-            passed += ok
-            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
-            if not ok:
-                print(f"         Expected : {expected}")
-                print(f"         Got      : {got}")
-        print(f"\n  {passed}/{len(cases)} passed")
-        sys.exit(0 if passed == len(cases) else 1)
-
     sol = Solution()
-    _run_tests([
-        ("[1,2,0] -> 3",       lambda: sol.firstMissingPositive([1,2,0]),       3),
-        ("[3,4,-1,1] -> 2",    lambda: sol.firstMissingPositive([3,4,-1,1]),    2),
-        ("[7,8,9,11,12] -> 1", lambda: sol.firstMissingPositive([7,8,9,11,12]),  1),
-        ("[1] -> 2",           lambda: sol.firstMissingPositive([1]),            2),
-        ("[2] -> 1",           lambda: sol.firstMissingPositive([2]),            1),
-        ("[1,2,3] -> 4",       lambda: sol.firstMissingPositive([1,2,3]),        4),
-    ])
+
+    tests = [
+        [1, 2, 0],
+        [3, 4, -1, 1],
+        [7, 8, 9, 11, 12],
+        [1],
+        [2],
+        [1, 2, 3],
+    ]
+
+    for nums in tests:
+        result = sol.firstMissingPositive(nums)
+        print(f"firstMissingPositive({nums}) = {result}")

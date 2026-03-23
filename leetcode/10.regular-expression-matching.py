@@ -131,32 +131,18 @@ class Solution:
 #
 
 if __name__ == "__main__":
-    import sys
-
-    def _run_tests(cases):
-        passed = 0
-        for desc, func, expected in cases:
-            try:
-                got = func()
-            except Exception as e:
-                got = f"ERROR: {e}"
-            ok = got == expected
-            passed += ok
-            print(f"  [{'PASS' if ok else 'FAIL'}] {desc}")
-            if not ok:
-                print(f"         Expected : {expected}")
-                print(f"         Got      : {got}")
-        print(f"\n  {passed}/{len(cases)} passed")
-        sys.exit(0 if passed == len(cases) else 1)
-
     sol = Solution()
-    _run_tests([
-        ("aa,a -> False",   lambda: sol.isMatch("aa","a"),    False),
-        ("aa,a* -> True",   lambda: sol.isMatch("aa","a*"),   True),
-        ("ab,.* -> True",   lambda: sol.isMatch("ab",".*"),   True),
-        ("aab,c*a*b -> True",lambda:sol.isMatch("aab","c*a*b"),True),
-        ("mississippi,mis*is*p*. -> False",
-         lambda: sol.isMatch("mississippi","mis*is*p*."),     False),
-        (",a* -> True",     lambda: sol.isMatch("","a*"),     True),
-        ("a,. -> True",     lambda: sol.isMatch("a","."),     True),
-    ])
+
+    tests = [
+        ("aa", "a", False),
+        ("aa", "a*", True),
+        ("ab", ".*", True),
+        ("aab", "c*a*b", True),
+        ("mississippi", "mis*is*p*.", False),
+        ("", "a*", True),
+        ("a", ".", True),
+    ]
+
+    for s, p, expected in tests:
+        result = sol.isMatch(s, p)
+        print(f"isMatch('{s}', '{p}') = {result}, expected = {expected}")

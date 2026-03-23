@@ -12,35 +12,63 @@
 # @lc code=start
 from typing import List
 
-# 只要找出一个最大子数组即可
-# 终于有道我完全靠自己做出来的了
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
+        """
+        最大子数组和 - Kadane算法（动态规划思想）
+
+        核心思想：
+        遍历数组时，维护以当前位置结尾的最大子数组和。
+        对于每个位置，有两种选择：
+        1. 将当前元素加入前面的子数组（如果前面的和 > 0）
+        2. 从当前元素开始新的子数组（如果前面的和 <= 0）
+
+        状态转移：
+        dp[i] = max(nums[i], dp[i-1] + nums[i])
+
+        优化空间：
+        只需要知道前一个状态，可以用一个变量代替数组
+
+        为什么用 O(n) 而不是分治法 O(n log n)？
+        虽然分治法也能解决，但Kadane算法更简洁高效
+        """
         n = len(nums)
-        if n == 1:
-            return nums[0]
-        ans = nums[0]
-        sub_array = []
-        sub_sum = nums[0]
-        for i in range(n):
-            if nums[i] >= 0:
-                if len(sub_array) ==0 or sub_sum<0:
-                    sub_sum  =  nums[i]
-                else:
-                    sub_sum += nums[i]
-                sub_array.append(nums[i])    
-            elif nums[i] < 0:
-                if sub_sum+nums[i]<0:
-                    sub_sum = nums[i]
-                    if nums[i] > sub_sum:
-                        sub_array = [nums[i]]
-                    else:
-                        sub_array=[]
-                else:
-                    sub_array.append(nums[i])
-                    sub_sum += nums[i]
-            ans = max(sub_sum,ans)
-        return ans
+        # 当前子数组和（以当前元素结尾的最大子数组和）
+        current_sum = nums[0]
+        # 全局最大子数组和
+        max_sum = nums[0]
+
+        for i in range(1, n):
+            # 关键决策：
+            # 如果当前子数组和 < 0，说明前面的子数组对后面的贡献是负的
+            # 不如从当前元素重新开始
+            if current_sum < 0:
+                current_sum = nums[i]
+            else:
+                current_sum += nums[i]
+
+            # 更新全局最大值
+            max_sum = max(max_sum, current_sum)
+
+        return max_sum
+
+    def maxSubArrayDP(self, nums: List[int]) -> int:
+        """
+        标准动态规划写法，更容易理解
+        dp[i] 表示以第 i 个元素结尾的最大子数组和
+        """
+        n = len(nums)
+        # dp[i] = 以 nums[i] 结尾的最大子数组和
+        dp = [0] * n
+        dp[0] = nums[0]
+        max_sum = dp[0]
+
+        for i in range(1, n):
+            # 状态转移：要么重新开始，要么延续前面的子数组
+            dp[i] = max(nums[i], dp[i-1] + nums[i])
+            max_sum = max(max_sum, dp[i])
+
+        return max_sum
 # @lc code=end  
 
 
@@ -59,4 +87,19 @@ class Solution:
 # @lcpr case=end
 
 #
+
+if __name__ == "__main__":
+    sol = Solution()
+
+    tests = [
+        [-2, 1, -3, 4, -1, 2, 1, -5, 4],
+        [1],
+        [5, 4, -1, 7, 8],
+        [-1],
+        [-2, -1],
+    ]
+
+    for nums in tests:
+        result = sol.maxSubArray(nums)
+        print(f"maxSubArray({nums}) = {result}")
 
