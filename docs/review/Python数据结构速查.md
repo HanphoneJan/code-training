@@ -1,12 +1,13 @@
 ---
 title: Python数据结构速查
 category: 参考手册
-last_updated: 2026-03-05
+last_updated: 2026-03-23
 ---
-
 # Python数据结构速查
 
 > 本文档汇总Python中常用的数据结构及其方法，便于快速查阅。
+
+---
 
 ## 字符串 str
 
@@ -15,8 +16,10 @@ last_updated: 2026-03-05
 ```python
 # 格式化与转换
 format(*args, **kwargs)      # 格式化字符串，算法中可用于进制转换
-split(sep=None, maxsplit=-1) # 以sep分割字符串
+split(sep=None, maxsplit=-1) # 以sep分割字符串，不指定则按空白符分割
 strip([chars])               # 去除首尾字符，默认去除 \r, \n, " "
+lstrip([chars])              # 只去除左侧
+rstrip([chars])              # 只去除右侧
 join(iterable)               # 拼接字符串，如 ','.join(['leet', 'code']) => "leet,code"
 replace(old, new[, count])   # 字符串替换
 
@@ -24,50 +27,102 @@ replace(old, new[, count])   # 字符串替换
 count(sub[, start[, end]])   # 统计子串出现次数
 startswith(prefix)           # 是否以prefix开头
 endswith(suffix)             # 是否以suffix结尾
-find(sub)                    # 查找子串位置，找不到返回-1
-index(sub)                   # 查找子串位置，找不到抛出异常
+find(sub[, start[, end]])    # 查找子串位置，找不到返回 -1
+index(sub[, start[, end]])   # 查找子串位置，找不到抛出 ValueError
+rfind(sub)                   # 从右向左查找
+rindex(sub)                  # 从右向左查找，找不到抛出异常
 
-# 其他
-ord(c)                       # 字符转ASCII码
-chr(i)                       # ASCII码转字符
+# 类型判断
+isdigit()                    # 是否全为数字字符
+isalpha()                    # 是否全为字母
+isalnum()                    # 是否全为字母或数字
+isspace()                    # 是否全为空白字符
+isupper()                    # 是否全为大写字母
+islower()                    # 是否全为小写字母
+
+# 大小写转换
+upper()                      # 全部大写
+lower()                      # 全部小写
+capitalize()                 # 首字母大写
+title()                      # 每个单词首字母大写
+swapcase()                   # 大小写互换
+
+# 对齐填充
+center(width[, fillchar])    # 居中对齐
+ljust(width[, fillchar])     # 左对齐（右侧填充）
+rjust(width[, fillchar])     # 右对齐（左侧填充）
+zfill(width)                 # 左侧填充 '0'
+
+# 字符编码
+ord(c)                       # 字符转ASCII码，如 ord('a') => 97
+chr(i)                       # ASCII码转字符，如 chr(97) => 'a'
 ```
 
 ### 算法应用
 
 ```python
-# 进制转换示例（LeetCode 191. Number of 1 Bits）
+# 进制转换（LeetCode 191. Number of 1 Bits）
+bin(n)                       # 转为二进制字符串，如 bin(10) => '0b1010'
 bin(n).count('1')            # 统计二进制中1的个数
-format(n, 'b')               # 转为二进制字符串
-format(n, 'o')               # 转为八进制字符串
-format(n, 'x')               # 转为十六进制字符串
+oct(n)                       # 转为八进制字符串
+hex(n)                       # 转为十六进制字符串
+format(n, 'b')               # 转为二进制字符串（无前缀）
+format(n, '08b')             # 转为8位二进制字符串（不足补0）
+format(n, 'o')               # 转为八进制字符串（无前缀）
+format(n, 'x')               # 转为十六进制字符串（无前缀）
+
+# 字符串与数字互转
+num = int("123")             # 字符串转整数
+num = int("ff", 16)          # 十六进制字符串转整数
+num = int("1010", 2)         # 二进制字符串转整数
+s = str(123)                 # 整数转字符串
+
+# 字符处理技巧
+chars = list("hello")        # 字符串转字符列表
+s = ''.join(chars)           # 字符列表转字符串
+s[::-1]                      # 反转字符串
+sorted(s)                    # 返回排序后的字符列表（不改变原字符串）
+
+# eval：将字符串作为表达式计算（谨慎使用）
+eval("1 + 2")                # => 3
+eval("'hello'.upper()")      # => 'HELLO'
 ```
 
 ---
 
 ## 列表 list
 
-> Python列表的底层数据结构是一个**动态数组**，支持动态扩展。
+> Python列表底层是**动态数组**，随机访问 O(1)，末尾增删 O(1)，中间增删 O(n)。
 
 ### 常用方法
 
 ```python
 # 排序与反转
-lst.sort(*, key=None, reverse=False)  # 原地排序
-lst.reverse()                         # 原地反转
+lst.sort(key=None, reverse=False)  # 原地排序（稳定排序）
+sorted(lst, key=None, reverse=False)  # 返回新列表，不改变原列表
+lst.reverse()                      # 原地反转
+lst[::-1]                          # 切片反转，返回新列表
 
 # 增删改查
-lst.append(val)       # 末尾添加元素
+lst.append(val)       # 末尾添加元素，O(1)
 lst.extend(t)         # 批量添加，等价于 lst += t
-lst.insert(i, val)    # 在位置i插入元素
-lst.pop([i])          # 移除并返回指定位置元素（默认最后一个）
-lst.remove(val)       # 移除第一个值为val的元素
+lst.insert(i, val)    # 在位置i插入元素，O(n)
+lst.pop()             # 移除并返回最后一个元素，O(1)
+lst.pop(i)            # 移除并返回位置i的元素，O(n)
+lst.remove(val)       # 移除第一个值为val的元素，O(n)
 lst.clear()           # 清空列表
+
+# 查询
 lst.count(val)        # 统计val出现次数
-lst.index(val)        # 查找val的索引
+lst.index(val)        # 查找val的第一个索引，不存在抛出 ValueError
+val in lst            # 判断是否存在，O(n)
 
 # 其他
 lst.copy()            # 浅拷贝
 len(lst)              # 列表长度
+sum(lst)              # 求和
+min(lst)              # 最小值
+max(lst)              # 最大值
 ```
 
 ### 列表推导式
@@ -79,9 +134,32 @@ squares = [x**2 for x in range(10)]
 # 带条件
 evens = [x for x in range(10) if x % 2 == 0]
 
+# 嵌套（二维展平）
+flat = [x for row in matrix for x in row]
+
 # 二维列表初始化（注意浅拷贝问题）
-matrix = [[0] * n for _ in range(m)]  # 正确
-# matrix = [[0] * n] * m              # 错误！所有行引用同一列表
+matrix = [[0] * n for _ in range(m)]  # 正确：每行独立
+# matrix = [[0] * n] * m              # 错误！所有行引用同一对象
+
+# 带索引遍历（enumerate）
+for i, val in enumerate(lst):
+    print(i, val)
+
+# 同时遍历两个列表（zip）
+for a, b in zip(lst1, lst2):
+    print(a, b)
+```
+
+### 切片操作
+
+```python
+lst[start:end]        # 左闭右开区间 [start, end)
+lst[start:end:step]   # 带步长
+lst[::-1]             # 反转
+lst[::2]              # 每隔一个取一个（偶数索引）
+lst[1::2]             # 奇数索引元素
+lst[:k]               # 前k个元素
+lst[-k:]              # 后k个元素
 ```
 
 ---
@@ -92,23 +170,25 @@ matrix = [[0] * n for _ in range(m)]  # 正确
 
 ```python
 # 访问与修改
-d[key]                    # 访问键值，不存在抛出KeyError
-d.get(key, default)       # 安全访问，不存在返回default
-d.setdefault(key, val)    # 如key不存在则设置默认值
-d.update(other)           # 批量更新
+d[key]                         # 访问键值，不存在抛出 KeyError
+d.get(key, default=None)       # 安全访问，不存在返回default
+d.setdefault(key, default)     # 如key不存在则设置默认值并返回
+d.update(other)                # 批量更新（可传字典或键值对）
 
 # 删除
-d.pop(key[, default])     # 删除并返回指定键值
-d.popitem()               # 删除并返回最后一个键值对（LIFO顺序）
-d.clear()                 # 清空字典
+d.pop(key[, default])          # 删除并返回指定键值，不存在时返回default
+d.popitem()                    # 删除并返回最后一个键值对（Python 3.7+ LIFO顺序）
+del d[key]                     # 删除指定键，不存在抛出 KeyError
+d.clear()                      # 清空字典
 
-# 视图对象
-d.keys()                  # 返回键的视图
-d.values()                # 返回值的视图
-d.items()                 # 返回键值对的视图
+# 视图对象（动态，随字典变化而更新）
+d.keys()                       # 返回键的视图
+d.values()                     # 返回值的视图
+d.items()                      # 返回键值对的视图
 
 # 构造技巧
-dict.fromkeys(iterable, value)  # 用可迭代对象创建字典，值都为value
+dict.fromkeys(iterable, value=None)  # 用可迭代对象创建字典
+{k: v for k, v in pairs}            # 字典推导式
 ```
 
 ### 迭代技巧
@@ -122,9 +202,21 @@ for k, v in d.items():
 for k in sorted(d):
     print(k, d[k])
 
-# 按值排序遍历
+# 按值排序遍历（升序）
 for k, v in sorted(d.items(), key=lambda x: x[1]):
     print(k, v)
+
+# 按值排序遍历（降序）
+for k, v in sorted(d.items(), key=lambda x: -x[1]):
+    print(k, v)
+
+# 字典合并（Python 3.9+）
+merged = d1 | d2               # 返回新字典
+d1 |= d2                       # 原地合并
+
+# 判断键是否存在
+key in d                       # O(1)
+key not in d                   # O(1)
 ```
 
 ---
@@ -134,39 +226,73 @@ for k, v in sorted(d.items(), key=lambda x: x[1]):
 ### 常用方法
 
 ```python
-# 添加删除
-s.add(val)                # 添加元素
-s.remove(val)             # 删除元素，不存在则报错
-s.discard(val)            # 删除元素，不存在不报错
-s.pop()                   # 随机移除并返回一个元素
-s.clear()                 # 清空集合
+# 创建
+s = {1, 2, 3}
+s = set([1, 2, 3])             # 从可迭代对象创建（可去重）
+s = set()                      # 注意：{} 是空字典而非空集合
+
+# 增删
+s.add(val)                     # 添加元素，已存在则无效
+s.update(*others)              # 迭代添加多个元素/集合
+s.remove(val)                  # 删除元素，不存在则抛出 KeyError
+s.discard(val)                 # 删除元素，不存在则不报错（推荐）
+s.pop()                        # 随机移除并返回一个元素
+s.clear()                      # 清空集合
 
 # 集合运算
-s1 | s2    # 并集
-s1 & s2    # 交集
-s1 - s2    # 差集
-s1 ^ s2    # 对称差集（异或）
+s1 | s2                        # 并集（union）
+s1 & s2                        # 交集（intersection）
+s1 - s2                        # 差集（difference），属于s1但不属于s2
+s1 ^ s2                        # 对称差集（symmetric_difference），只属于一个集合的元素
+s1.union(s2)                   # 并集（等价于 |）
+s1.intersection(s2)            # 交集（等价于 &）
+s1.difference(s2)              # 差集（等价于 -）
 
-# 判断
-val in s                  # 判断元素是否在集合中
-s1.issubset(s2)           # s1是否是s2的子集
-s1.issuperset(s2)         # s1是否是s2的超集
+# 关系判断
+val in s                       # O(1) 查询
+s1.issubset(s2)                # s1是否是s2的子集（s1 <= s2）
+s1.issuperset(s2)              # s1是否是s2的超集（s1 >= s2）
+s1.isdisjoint(s2)              # 两集合是否无交集
 ```
 
-### 去重与计数
+### 去重与快速查找
 
 ```python
-# 列表去重（保持顺序）
+# 列表去重（不保序，最简洁）
+unique = list(set(lst))
+
+# 列表去重（保持原顺序）
 seen = set()
 unique = [x for x in lst if not (x in seen or seen.add(x))]
 
-# 利用集合快速查找
-lookup = set(lst)         # O(n)构建，O(1)查询
+# 利用集合快速查找：O(n)构建，O(1)查询
+lookup = set(lst)
+if target in lookup:
+    print("found")
+
+# 两数之和经典用法
+def twoSum(nums, target):
+    seen = {}
+    for i, x in enumerate(nums):
+        if target - x in seen:
+            return [seen[target - x], i]
+        seen[x] = i
 ```
 
 ---
 
 ## collections 模块
+
+> Python内置的数据结构扩展库，提供高效的专用数据结构。
+
+| 数据结构        | 核心作用                                           | 典型场景                              |
+| --------------- | -------------------------------------------------- | ------------------------------------- |
+| `Counter`     | 计数器：快速统计可迭代对象中元素出现次数           | 词频统计、热点Key计数、字母异位词     |
+| `defaultdict` | 字典扩展：访问不存在的Key自动初始化默认值          | 计数统计、分组聚合、嵌套字典          |
+| `OrderedDict` | 有序字典：保证字典插入顺序（Python 3.7+ 普通dict也有序，但此类提供额外API） | LRU缓存、需要移动键到首尾的场景 |
+| `deque`       | 双端队列：两端增删 O(1)，优于列表首尾操作 O(n)     | 队列/栈、滑动窗口、BFS                |
+| `namedtuple`  | 命名元组：给元组元素命名，兼具不可变性和可读性     | 轻量数据对象（坐标、用户信息）        |
+| `ChainMap`    | 链式映射：合并多个字典，查询时按顺序遍历（无需拷贝）| 多配置合并、环境变量优先级覆盖        |
 
 ### Counter 计数器
 
@@ -174,19 +300,33 @@ lookup = set(lst)         # O(n)构建，O(1)查询
 from collections import Counter
 
 # 创建
-cnt = Counter([1, 1, 2, 3, 3, 3])  # Counter({3: 3, 1: 2, 2: 1})
-cnt = Counter('abracadabra')       # Counter({'a': 5, 'b': 2, ...})
+cnt = Counter([1, 1, 2, 3, 3, 3])   # Counter({3: 3, 1: 2, 2: 1})
+cnt = Counter('abracadabra')         # Counter({'a': 5, 'b': 2, 'r': 2, 'c': 1, 'd': 1})
+cnt = Counter({'a': 3, 'b': 1})      # 直接从字典创建
 
 # 常用操作
-cnt.most_common(n)        # 返回出现次数最多的n个元素
-cnt.elements()            # 返回所有元素的可迭代对象
-cnt.total()               # 返回所有计数总和（Python 3.10+）
+cnt[key]                             # 访问计数，不存在返回0（不是KeyError）
+cnt.most_common(n)                   # 返回出现次数最多的n个元素（列表，降序）
+cnt.most_common()                    # 不指定n则返回所有（按频率降序）
+cnt.elements()                       # 返回所有元素的迭代器（按计数重复）
+cnt.total()                          # 所有计数总和（Python 3.10+）
+cnt.subtract(iterable)               # 减少计数（计数可变为负数）
+cnt.update(iterable)                 # 增加计数
 
-# 运算
-c1 + c2                   # 计数相加
-c1 - c2                   # 计数相减（只保留正数）
-c1 & c2                   # 取最小计数
-c1 | c2                   # 取最大计数
+# 算术运算
+c1 + c2                             # 计数相加（只保留正数）
+c1 - c2                             # 计数相减（只保留正数）
+c1 & c2                             # 取每个键的最小计数
+c1 | c2                             # 取每个键的最大计数
+
+# 示例：统计字母频率
+s = "abracadabra"
+cnt = Counter(s)
+print(cnt.most_common(3))            # [('a', 5), ('b', 2), ('r', 2)]
+
+# 示例：判断字母异位词（LeetCode 438）
+def isAnagram(s, t):
+    return Counter(s) == Counter(t)
 ```
 
 ### defaultdict 默认字典
@@ -194,15 +334,68 @@ c1 | c2                   # 取最大计数
 ```python
 from collections import defaultdict
 
-# 自动为不存在的键提供默认值
-dd = defaultdict(list)    # 默认值为空列表
-dd = defaultdict(int)     # 默认值为0
-dd = defaultdict(set)     # 默认值为空集合
+# 创建（传入无参可调用对象作为工厂函数）
+dd = defaultdict(list)               # 默认值为空列表 []
+dd = defaultdict(int)                # 默认值为 0
+dd = defaultdict(set)                # 默认值为空集合 set()
+dd = defaultdict(lambda: -1)         # 默认值为 -1
+
+# 核心特性：访问不存在的键时，自动创建默认值（不抛 KeyError）
+dd['new_key'].append(1)              # 自动创建空列表并追加
+dd['count'] += 1                     # 自动创建0并加1
+
+# 注意区别
+dd[key]        # 若key不存在，触发默认值，key被插入字典
+dd.get(key)    # 若key不存在，返回None，key不被插入（不触发默认值）
 
 # 示例：分组
+pairs = [('a', 1), ('b', 2), ('a', 3)]
 groups = defaultdict(list)
 for key, val in pairs:
-    groups[key].append(val)  # 无需检查key是否存在
+    groups[key].append(val)
+# groups: {'a': [1, 3], 'b': [2]}
+
+# 示例：计数（等价于Counter）
+freq = defaultdict(int)
+for c in "abracadabra":
+    freq[c] += 1
+```
+
+### OrderedDict 有序字典
+
+```python
+from collections import OrderedDict
+
+# 创建
+od = OrderedDict()
+od['a'] = 1
+od['b'] = 2
+od['c'] = 3
+
+# 独有操作（普通dict没有）
+od.move_to_end('a')           # 将键'a'移动到末尾
+od.move_to_end('c', last=False)  # 将键'c'移动到开头
+od.popitem(last=True)         # 弹出最后一个键值对（LIFO）
+od.popitem(last=False)        # 弹出第一个键值对（FIFO）
+
+# 示例：LRU缓存（最近最少使用）
+class LRUCache:
+    def __init__(self, capacity):
+        self.cache = OrderedDict()
+        self.cap = capacity
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        self.cache.move_to_end(key)   # 访问后移至末尾（最近使用）
+        return self.cache[key]
+
+    def put(self, key, value):
+        if key in self.cache:
+            self.cache.move_to_end(key)
+        self.cache[key] = value
+        if len(self.cache) > self.cap:
+            self.cache.popitem(last=False)  # 淘汰最久未使用的（头部）
 ```
 
 ### deque 双端队列
@@ -211,68 +404,267 @@ for key, val in pairs:
 from collections import deque
 
 # 创建
-dq = deque(maxlen=3)      # 可设置最大长度，满了自动弹出左侧元素
+dq = deque()
+dq = deque([1, 2, 3])
+dq = deque(maxlen=3)          # 设置最大长度，满了追加时自动弹出对侧元素
 
 # 操作
-dq.append(x)              # 右侧添加
-dq.appendleft(x)          # 左侧添加
-dq.pop()                  # 右侧弹出
-dq.popleft()              # 左侧弹出（队列的标准出队操作）
-dq.extend(iterable)       # 右侧批量添加
-dq.extendleft(iterable)   # 左侧批量添加
-dq.rotate(n)              # 旋转，正数向右，负数向左
-dq.clear()                # 清空
+dq.append(x)                  # 右侧添加，O(1)
+dq.appendleft(x)              # 左侧添加，O(1)
+dq.pop()                      # 右侧弹出，O(1)
+dq.popleft()                  # 左侧弹出，O(1)
+dq.extend(iterable)           # 右侧批量添加
+dq.extendleft(iterable)       # 左侧批量添加（注意顺序会反转）
+dq.rotate(n)                  # 正数：右旋（尾部移到头部），负数：左旋
+dq.clear()                    # 清空
+dq.insert(i, x)               # 在位置i插入元素，O(n)（不常用，需要时用list）
+dq.count(val)                 # 统计val出现次数
+dq.remove(val)                # 删除第一个值为val的元素
+dq.reverse()                  # 原地反转
+len(dq)                       # 长度
+dq[0]                         # 查看头部（不弹出）
+dq[-1]                        # 查看尾部（不弹出）
 
-# 可用作栈和队列！
+# 可用作栈（右进右出）和队列（右进左出）
+
+# 示例：BFS层序遍历
+from collections import deque
+q = deque([root])
+while q:
+    node = q.popleft()
+    if node.left:  q.append(node.left)
+    if node.right: q.append(node.right)
+
+# 示例：滑动窗口最大值（单调递减队列）
+def maxSlidingWindow(nums, k):
+    dq = deque()   # 存索引，保持单调递减
+    res = []
+    for i, x in enumerate(nums):
+        while dq and nums[dq[-1]] <= x:
+            dq.pop()
+        dq.append(i)
+        if dq[0] <= i - k:    # 队头超出窗口范围
+            dq.popleft()
+        if i >= k - 1:
+            res.append(nums[dq[0]])
+    return res
+```
+
+### namedtuple 命名元组
+
+```python
+from collections import namedtuple
+
+# 创建命名元组类型
+Point = namedtuple('Point', ['x', 'y'])
+Person = namedtuple('Person', 'name age score')  # 也可以用空格分隔的字符串
+
+# 使用
+p = Point(3, 4)
+print(p.x, p.y)              # 3 4（可用属性名访问）
+print(p[0], p[1])            # 3 4（也可以用索引访问）
+print(p)                     # Point(x=3, y=4)
+
+# 不可变（元组特性）
+# p.x = 5  # 报错 AttributeError
+
+# 实用方法
+p._asdict()                  # 转为 OrderedDict，如 {'x': 3, 'y': 4}
+p._replace(x=10)             # 返回新元组，将x替换为10
+Point._fields                # 返回字段名元组 ('x', 'y')
+
+# 示例：表示坐标
+directions = [Point(0, 1), Point(0, -1), Point(1, 0), Point(-1, 0)]
+for d in directions:
+    new_x, new_y = cur.x + d.x, cur.y + d.y
+```
+
+### ChainMap 链式映射
+
+```python
+from collections import ChainMap
+
+# 创建（多个字典按顺序查找，无需合并拷贝）
+defaults = {'color': 'red', 'size': 'M'}
+overrides = {'color': 'blue', 'weight': 1.5}
+combined = ChainMap(overrides, defaults)
+
+# 查找：按顺序查找，找到第一个匹配即返回
+print(combined['color'])     # 'blue'（overrides中找到）
+print(combined['size'])      # 'M'（overrides中没有，从defaults找到）
+
+# 修改只影响第一个字典
+combined['new_key'] = 'val'  # 写入overrides
+del combined['new_key']      # 只能删除第一个字典中的键
+
+# 新增一层（常用于作用域模拟）
+child = combined.new_child({'color': 'green'})
+
+# 示例：命令行参数 > 环境变量 > 默认配置 的优先级
+import os
+cli_args = {'debug': True}
+env_vars = {'host': 'localhost'}
+defaults  = {'host': '0.0.0.0', 'port': 8080, 'debug': False}
+config = ChainMap(cli_args, env_vars, defaults)
+print(config['debug'])       # True（CLI优先）
+print(config['host'])        # 'localhost'（env优先）
+print(config['port'])        # 8080（从defaults取）
+```
+
+---
+
+## bisect 二分查找模块
+
+> 只能用于**已排序的数组**，所有操作时间复杂度 O(log n)。
+
+```python
+import bisect
+
+a = [1, 2, 4, 4, 5, 8]
+
+# 查找插入位置（不实际插入）
+bisect.bisect_left(a, 4)     # => 2，若存在相等元素，插入到左侧（第一个4的位置）
+bisect.bisect_right(a, 4)    # => 4，若存在相等元素，插入到右侧（最后一个4的后面）
+bisect.bisect(a, 4)          # => 4，等价于 bisect_right
+
+# 实际插入（保持有序）
+bisect.insort_left(a, 3)     # 将3插入，保持升序，相等元素插入到左侧
+bisect.insort_right(a, 3)    # 将3插入，保持升序，相等元素插入到右侧
+bisect.insort(a, 3)          # 等价于 insort_right
+
+# 参数 lo, hi：限制搜索范围
+bisect.bisect_left(a, x, lo=0, hi=len(a))  # 只在 a[lo:hi] 范围内搜索
+```
+
+### 核心用法：左右边界查找
+
+```python
+a = [1, 2, 4, 4, 4, 5, 8]
+
+# 查找第一个 >= x 的位置（左边界）
+def lower_bound(a, x):
+    return bisect.bisect_left(a, x)   # 等价于 C++ lower_bound
+
+# 查找第一个 > x 的位置（右边界）
+def upper_bound(a, x):
+    return bisect.bisect_right(a, x)  # 等价于 C++ upper_bound
+
+# 查找最后一个 <= x 的位置
+def find_last_le(a, x):
+    idx = bisect.bisect_right(a, x) - 1
+    return idx if idx >= 0 else -1
+
+# 判断x是否在数组中
+def contains(a, x):
+    idx = bisect.bisect_left(a, x)
+    return idx < len(a) and a[idx] == x
+
+# 示例：统计有序数组中x出现的次数
+def count_occurrences(a, x):
+    return bisect.bisect_right(a, x) - bisect.bisect_left(a, x)
+
+a = [1, 2, 4, 4, 4, 5, 8]
+print(count_occurrences(a, 4))   # 3
+```
+
+### 算法应用（LeetCode 2070 最大美丽值）
+
+```python
+# 排序后用bisect代替手写二分，代码更简洁
+import bisect
+
+def maximumBeauty(items, queries):
+    items.sort()
+    prices = [p for p, _ in items]
+    max_beauty = []
+    cur_max = 0
+    for _, b in items:
+        cur_max = max(cur_max, b)
+        max_beauty.append(cur_max)
+
+    result = []
+    for q in queries:
+        idx = bisect.bisect_right(prices, q) - 1
+        result.append(max_beauty[idx] if idx >= 0 else 0)
+    return result
 ```
 
 ---
 
 ## heapq 堆模块
 
-> 堆是完全二叉树，用数组存储。Python的heapq实现的是**小顶堆**。
+> 堆是完全二叉树，用数组存储。Python的heapq实现的是**小顶堆**（最小值在堆顶）。
+
+| 类型     | 核心规则                   | 堆顶   |
+| -------- | -------------------------- | ------ |
+| 小顶堆   | 父节点值 ≤ 所有子节点值   | 最小值 |
+| 大顶堆   | 父节点值 ≥ 所有子节点值   | 最大值 |
 
 ### 基础操作
 
 ```python
 import heapq
 
-# 创建堆
+# 创建堆（两种方式）
 heap = []
-heapq.heappush(heap, x)           # 插入元素
-min_val = heapq.heappop(heap)     # 弹出最小值
+heapq.heappush(heap, x)              # 插入元素并维持堆结构，O(log n)
+min_val = heapq.heappop(heap)        # 弹出最小值，O(log n)
+min_val = heap[0]                    # 查看堆顶（不弹出），O(1)
 
-# 原地堆化（O(n)）
+# 原地堆化（O(n)，比逐个push高效）
 arr = [5, 4, 3, 2, 1]
-heapq.heapify(arr)                # 转为小顶堆
+heapq.heapify(arr)                   # 将列表原地转为小顶堆
 
 # 进阶操作
-heapq.heappushpop(heap, x)        # 先插入再弹出（比分开调用高效）
-heapq.heapreplace(heap, x)        # 先弹出再插入（与heappushpop顺序相反）
+heapq.heappushpop(heap, x)           # 先插入x，再弹出最小值（原子操作，高效）
+heapq.heapreplace(heap, x)           # 先弹出最小值，再插入x（要求堆非空）
+# 区别：heappushpop 保证弹出的是"插入x后的最小值"，heapreplace 保证堆顶先被弹出
 
 # Top K问题
-heapq.nsmallest(k, iterable)      # 返回最小的k个元素
-heapq.nlargest(k, iterable)       # 返回最大的k个元素
+heapq.nsmallest(k, iterable)         # 返回最小的k个元素（已排序列表）
+heapq.nlargest(k, iterable)          # 返回最大的k个元素（已排序列表）
 heapq.nsmallest(k, iterable, key=lambda x: x[1])  # 支持自定义key
+
+# 合并多个有序堆/迭代器（返回迭代器，惰性求值）
+heapq.merge(*iterables, key=None, reverse=False)   # 合并多个已排序序列
+list(heapq.merge([1,3,5], [2,4,6]))  # [1, 2, 3, 4, 5, 6]
 ```
 
-### 大顶堆技巧
+### 大顶堆（插入负值）
 
 ```python
-# 通过插入负值实现大顶堆
+# Python没有原生大顶堆，通过插入负值模拟
 max_heap = []
-heapq.heappush(max_heap, -x)      # 插入负值
-max_val = -heapq.heappop(max_heap) # 弹出后取负
+heapq.heappush(max_heap, -x)         # 插入时取负
+max_val = -heapq.heappop(max_heap)   # 弹出后取负
 
-# 示例：从数量最多的堆取走礼物（LeetCode 2558）
-def pickGifts(self, gifts: List[int], k: int) -> int:
-    for i in range(len(gifts)):
-        gifts[i] *= -1
-    heapify(gifts)
-    while k and -gifts[0] > 1:
-        heapreplace(gifts, -isqrt(-gifts[0]))
-        k -= 1
-    return -sum(gifts)
+# 示例：维护前k大的数
+k = 3
+heap = []
+for x in [3, 1, 4, 1, 5, 9, 2, 6]:
+    heapq.heappush(heap, -x)
+
+top_k = [-heapq.heappop(heap) for _ in range(k)]
+print(top_k)   # [9, 6, 5]
+```
+
+### 元组堆（多键排序）
+
+```python
+# heapq支持元组，按元组元素依次比较
+import heapq
+
+heap = []
+heapq.heappush(heap, (priority, task_id, task))  # 先按priority排序
+
+# 示例：Dijkstra最短路
+h = [(0, start)]   # (距离, 节点)
+while h:
+    dist, node = heapq.heappop(h)
+    for neighbor, weight in graph[node]:
+        if dist + weight < dis[neighbor]:
+            dis[neighbor] = dist + weight
+            heapq.heappush(h, (dis[neighbor], neighbor))
 ```
 
 ### 堆排序
@@ -282,34 +674,205 @@ def heap_sort(arr):
     heapq.heapify(arr)
     return [heapq.heappop(arr) for _ in range(len(arr))]
 
-# 示例
 print(heap_sort([7, 2, 5, 1, 8, 3]))  # [1, 2, 3, 5, 7, 8]
+```
+
+---
+
+## itertools 模块
+
+### accumulate 前缀和/前缀积
+
+```python
+from itertools import accumulate
+import operator
+
+nums = [1, 2, 3, 4, 5]
+
+# 默认：前缀和
+list(accumulate(nums))               # [1, 3, 6, 10, 15]
+
+# 指定运算：前缀积
+list(accumulate(nums, operator.mul)) # [1, 2, 6, 24, 120]
+
+# 指定初始值（Python 3.8+）
+list(accumulate(nums, initial=0))    # [0, 1, 3, 6, 10, 15]（长度多1）
+
+# 前缀最大值
+list(accumulate(nums, max))          # [1, 2, 3, 4, 5]
+list(accumulate([3,1,4,1,5,9], max)) # [3, 3, 4, 4, 5, 9]
+
+# 应用：差分数组还原（差分求前缀和得原数组）
+diff = [2, 1, -1, 3, -2]
+original = list(accumulate(diff))    # [2, 3, 2, 5, 3]
+
+# 应用：统计差分数组中被覆盖的点
+diff = [0] * (max_end + 2)
+for start, end in intervals:
+    diff[start] += 1
+    diff[end + 1] -= 1
+covered_count = sum(s > 0 for s in accumulate(diff))
+```
+
+### chain 链式迭代
+
+```python
+from itertools import chain
+
+# 连接多个可迭代对象（不创建新列表，惰性求值）
+list1 = [1, 2, 3]
+tuple1 = ('a', 'b')
+str1 = "XY"
+result = list(chain(list1, tuple1, str1))
+# [1, 2, 3, 'a', 'b', 'X', 'Y']
+
+# 展平嵌套列表（chain.from_iterable）
+nested = [[1, 2], [3, 4, 5], [6]]
+flat = list(chain.from_iterable(nested))
+# [1, 2, 3, 4, 5, 6]
+
+# 算法应用：提取多个栈的所有元素
+stacks = [[1, 2], [3], [4, 5, 6]]
+all_indices = sorted(chain.from_iterable(stacks))
+```
+
+### 其他常用 itertools
+
+```python
+from itertools import product, permutations, combinations, combinations_with_replacement
+
+# 笛卡尔积（多层嵌套循环的替代）
+list(product([1,2], [3,4]))          # [(1,3),(1,4),(2,3),(2,4)]
+list(product('AB', repeat=2))        # [('A','A'),('A','B'),('B','A'),('B','B')]
+
+# 全排列（n个元素取r个的全排列）
+list(permutations([1,2,3], 2))       # [(1,2),(1,3),(2,1),(2,3),(3,1),(3,2)]
+
+# 组合（不重复，不考虑顺序）
+list(combinations([1,2,3,4], 2))     # [(1,2),(1,3),(1,4),(2,3),(2,4),(3,4)]
+
+# 可重复组合
+list(combinations_with_replacement([1,2,3], 2))  # [(1,1),(1,2),(1,3),(2,2),(2,3),(3,3)]
+```
+
+---
+
+## 常用数学函数
+
+### math 模块
+
+```python
+import math
+
+# 无穷大（推荐写法）
+inf = math.inf                  # 正无穷
+neg_inf = -math.inf             # 负无穷
+inf = float('inf')              # 不需要导入math
+neg_inf = float('-inf')
+
+# 常用函数
+math.floor(x)                   # 向下取整
+math.ceil(x)                    # 向上取整
+math.sqrt(x)                    # 平方根（返回float）
+math.isqrt(x)                   # 整数平方根（向下取整，返回int）
+math.gcd(a, b)                  # 最大公约数（Python 3.5+）
+math.lcm(a, b)                  # 最小公倍数（Python 3.9+）
+math.log(x)                     # 自然对数
+math.log2(x)                    # 以2为底的对数
+math.log10(x)                   # 以10为底的对数
+math.pow(x, y)                  # x的y次方（返回float）
+math.factorial(n)               # n的阶乘
+math.comb(n, k)                 # 组合数 C(n,k)（Python 3.8+）
+math.perm(n, k)                 # 排列数 P(n,k)（Python 3.8+）
+
+# 常用内置函数（无需导入）
+abs(x)                          # 绝对值
+pow(x, y)                       # x的y次方（整数运算不丢精度）
+pow(x, y, mod)                  # 快速幂取模，等价于 x**y % mod
+divmod(a, b)                    # 返回 (a//b, a%b) 元组
+round(x, n)                     # 四舍五入，n为小数位数
+```
+
+### 无穷大的算法应用
+
+```python
+# 初始化最大值/最小值的技巧
+min_val = float('inf')    # 比较时任何实数都比它小
+max_val = float('-inf')   # 比较时任何实数都比它大
+
+# 验证BST（用±inf传递边界）
+def isValidBST(root, left=-math.inf, right=math.inf):
+    if root is None:
+        return True
+    x = root.val
+    return left < x < right and \
+           isValidBST(root.left, left, x) and \
+           isValidBST(root.right, x, right)
+
+# Dijkstra初始化
+dis = [float('inf')] * n
+dis[start] = 0
 ```
 
 ---
 
 ## 列表 vs 数组 vs 链表
 
-| 特性 | Python列表 | array.array | 链表 |
-|------|-----------|-------------|------|
-| 存储方式 | 动态数组（连续内存） | 连续内存 | 非连续内存 |
-| 随机访问 | O(1) | O(1) | O(n) |
-| 头部插入 | O(n) | O(n) | O(1) |
-| 尾部插入 | O(1)均摊 | O(1)均摊 | O(1)（已知尾节点）|
-| 内存开销 | 较小 | 小 | 较大（需存储指针）|
-| 元素类型 | 任意 | 固定 | 任意 |
+| 特性     | Python列表           | array.array | 链表               |
+| -------- | -------------------- | ----------- | ------------------ |
+| 存储方式 | 动态数组（连续内存） | 连续内存    | 非连续内存         |
+| 随机访问 | O(1)                 | O(1)        | O(n)               |
+| 头部插入 | O(n)                 | O(n)        | O(1)               |
+| 尾部插入 | O(1)均摊             | O(1)均摊    | O(1)（已知尾节点） |
+| 内存开销 | 较小                 | 最小        | 较大（需存储指针） |
+| 元素类型 | 任意                 | 固定        | 任意               |
 
 ```python
 import array
 
-# array模块用于大规模数值计算，类型固定
+# array模块用于大规模数值计算，元素类型固定，内存比list省
 arr = array.array('i', [1, 2, 3])  # 'i'表示有符号整数
+arr = array.array('d', [1.0, 2.5]) # 'd'表示双精度浮点数
+
+# 常用类型码
+# 'b': 有符号字节    'B': 无符号字节
+# 'i': 有符号整数    'I': 无符号整数
+# 'f': 单精度浮点    'd': 双精度浮点
 ```
 
 ---
 
-## 参考
+## 内置函数速查
 
-- [Python官方文档 - 内置类型](https://docs.python.org/zh-cn/3/library/stdtypes.html)
-- [collections模块文档](https://docs.python.org/zh-cn/3/library/collections.html)
-- [heapq模块文档](https://docs.python.org/zh-cn/3/library/heapq.html)
+```python
+# 排序相关
+sorted(iterable, key=None, reverse=False)   # 返回新列表
+lst.sort(key=None, reverse=False)            # 原地排序
+
+# 排序key技巧
+lst.sort(key=lambda x: x[1])               # 按第二个元素排序
+lst.sort(key=lambda x: (x[1], x[0]))       # 多键排序
+lst.sort(key=lambda x: -x)                  # 降序（不用reverse=True）
+import functools
+lst.sort(key=functools.cmp_to_key(compare)) # 自定义比较函数
+
+# 常用内置函数
+enumerate(iterable, start=0)   # 返回(索引, 元素)对
+zip(*iterables)                # 并行迭代多个序列
+map(func, iterable)            # 对每个元素应用函数
+filter(func, iterable)         # 过滤满足条件的元素
+any(iterable)                  # 任一为真则返回True
+all(iterable)                  # 全部为真则返回True
+sum(iterable, start=0)         # 求和（start为初始值）
+min(iterable, key=None)        # 最小值
+max(iterable, key=None)        # 最大值
+
+# 示例
+nums = [3, 1, 4, 1, 5]
+print(list(enumerate(nums, 1)))  # [(1,3),(2,1),(3,4),(4,1),(5,5)]
+print(list(zip([1,2,3], 'abc'))) # [(1,'a'),(2,'b'),(3,'c')]
+print(list(map(str, nums)))      # ['3','1','4','1','5']
+print(list(filter(lambda x: x>2, nums)))  # [3, 4, 5]
+print(any(x > 4 for x in nums))  # True
+print(all(x > 0 for x in nums))  # True
+```

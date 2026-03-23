@@ -199,6 +199,19 @@ date_reviewed: []
 
 ## Key Principles
 
+### Preserve Original Code (CRITICAL)
+**绝对禁止删除用户原有的代码和注释。**
+- 用户亲手写的代码是宝贵的学习记录，必须完整保留
+- 可以添加新注释、改进表达、补充说明，但不能删除原有内容
+- 可以重构代码结构（如提取函数），但要保留原代码作为注释或备用实现
+- 已有的测试用例要保留并补充，不能替换
+
+**正确的做法：**
+- 在原有代码基础上添加文档字符串和注释
+- 在代码上方或旁边补充更详细的说明
+- 为已有的实现添加复杂度分析注释
+- 保留所有原有注释，即使表达不够完美
+
 ### Progressive Teaching
 Always present solutions in order:
 1. **Naive/Brute force** - establishes baseline understanding
@@ -260,8 +273,9 @@ Always present solutions in order:
 
 ## Red Flags - Check Before Finishing
 
+- [ ] **Original code is preserved** - user's handwritten code/comments are not deleted
 - [ ] Comments explain WHY, not just WHAT
-- [ ] Test cases include edge cases
+- [ ] Test cases include edge cases (original tests preserved + new ones added)
 - [ ] Markdown follows exact template structure
 - [ ] Complexity analysis uses table format
 - [ ] No "thinking traces" in final content
