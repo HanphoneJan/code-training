@@ -3,7 +3,7 @@ title: 二叉树
 category: 数据结构
 parent_topic: tree.md
 difficulty_range: [简单, 困难]
-last_updated: 2026-02-25
+last_updated: 2026-03-23
 ---
 
 # 二叉树
@@ -11,6 +11,8 @@ last_updated: 2026-02-25
 ## 知识点概述
 
 二叉树是每个节点最多有两个子节点的树结构，是最常见的树形结构。
+
+**二叉树**（Binary tree）是每个节点最多只有两个分支（即不存在分支度大于 2 的节点）的树结构。二叉树的分支具有左右次序，不能随意颠倒。
 
 ### 节点定义
 
@@ -37,9 +39,19 @@ struct TreeNode {
 
 每层节点都达到最大值，深度为 k 的满二叉树有 2^k - 1 个节点。
 
+除最后一层节点外，其他所有节点都有两个子结点，必定是完全二叉树。
+
 ### 2. 完全二叉树
 
-除最后一层外，其他层的节点数都达到最大，最后一层的节点都靠左排列。
+除最后一层外，若其余层都是满的，并且最后一层是满的或者是在右边缺少连续若干节点，则这个二叉树就是**完全二叉树**。
+
+简单来说：除最后一层外，其他层的节点数都达到最大，最后一层的节点都靠左排列（或满的）。
+
+**当根节点的值为 1 的情况下，若父结点的序号是 i，那么左子节点的序号就是 2i，右子节点的序号是 2i+1。这个性质使得完全二叉树利用数组存储时可以极大地节省空间，以及利用序号找到某个节点的父结点和子节点。**
+
+![完全二叉树示例图1.webp](https://hanphone.top/gh/HanphoneJan/public-pictures/datastructure/%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91%E7%A4%BA%E4%BE%8B%E5%9B%BE1.webp)
+
+![完全二叉树的顺序存储示例图.webp](https://hanphone.top/gh/HanphoneJan/public-pictures/datastructure/%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E7%A4%BA%E4%BE%8B%E5%9B%BE.webp)
 
 ### 3. 二叉搜索树（BST）
 
@@ -50,6 +62,8 @@ struct TreeNode {
 ### 4. 平衡二叉树
 
 任意节点的左右子树高度差不超过 1。
+
+包括AVL树和红黑树。
 
 ## 常见操作
 
@@ -65,25 +79,25 @@ from collections import deque
 def levelOrder(root):
     if not root:
         return []
-    
+
     result = []
     queue = deque([root])
-    
+
     while queue:
         level_size = len(queue)
         current_level = []
-        
+
         for _ in range(level_size):
             node = queue.popleft()
             current_level.append(node.val)
-            
+
             if node.left:
                 queue.append(node.left)
             if node.right:
                 queue.append(node.right)
-        
+
         result.append(current_level)
-    
+
     return result
 ```
 
@@ -124,19 +138,19 @@ def traverse(root):
     # 1. 终止条件
     if not root:
         return
-    
+
     # 2. 处理当前节点（前序位置）
     process(root)
-    
+
     # 3. 递归左子树
     traverse(root.left)
-    
+
     # 4. 处理当前节点（中序位置）
     process(root)
-    
+
     # 5. 递归右子树
     traverse(root.right)
-    
+
     # 6. 处理当前节点（后序位置）
     process(root)
 ```
