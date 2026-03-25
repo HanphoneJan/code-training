@@ -243,6 +243,65 @@ Always present solutions in order:
 - Include type hints where helpful
 - Keep code runnable and complete
 
+## LeetCode Submission Requirements
+
+### Class Definition Placement (CRITICAL)
+**除 Solution 以外的类（如 TreeNode、ListNode 等）绝对不能放在 `@lc code=start` 和 `@lc code=end` 之间。**
+
+LeetCode 平台会自动提供这些数据结构类的定义，如果在提交代码区域重复定义会导致提交错误。
+
+**正确的文件结构：**
+```python
+#
+# @lc app=leetcode.cn id=xxx lang=python3
+# ...
+
+# @lcpr-template-start
+from typing import List, Optional
+
+
+# Definition for a binary tree node.
+# TreeNode 定义在这里（模板区域，不会提交到 LeetCode）
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+# @lcpr-template-end
+# @lc code=start
+# Solution 类必须在这里（提交区域）
+class Solution:
+    def method(self, root: Optional[TreeNode]) -> ...:
+        ...
+
+
+# @lc code=end
+
+#
+# @lcpr case=start
+# ...
+# @lcpr case=end
+
+
+# main 代码段必须位于文件最后面
+if __name__ == "__main__":
+    sol = Solution()
+    # 测试代码
+```
+
+**常见错误：**
+- ❌ 将 `TreeNode`、`ListNode` 等类定义在 `@lc code=start` 和 `@lc code=end` 之间
+- ❌ 将 `import` 语句放在 `@lc code=start` 之后（应该放在模板区域）
+
+### Test Code Placement
+**`if __name__ == "__main__":` 测试代码段必须位于文件最后面。**
+
+- 测试代码放在所有 LeetCode 注释标记之后
+- 确保测试代码不会影响 LeetCode 的提交和执行
+- 测试代码可以包含辅助函数（如 build_tree、链表转换等）
+
 ## Common Patterns by Problem Type
 
 ### Array/Two Pointers
@@ -282,6 +341,8 @@ Always present solutions in order:
 ## Red Flags - Check Before Finishing
 
 - [ ] **Original code is preserved** - user's handwritten code/comments are not deleted
+- [ ] **TreeNode/ListNode 不在提交区域** - 辅助类定义在 `@lcpr-template-start` 和 `@lcpr-template-end` 之间，不在 `@lc code=start` 和 `@lc code=end` 之间
+- [ ] **main 测试代码在文件最后** - `if __name__ == "__main__":` 位于文件末尾，在所有 LeetCode 注释之后
 - [ ] Comments explain WHY, not just WHAT
 - [ ] Test cases include edge cases (original tests preserved + new ones added)
 - [ ] Markdown follows exact template structure
