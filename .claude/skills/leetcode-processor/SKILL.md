@@ -2,7 +2,6 @@
 name: leetcode-processor
 description: Use when processing LeetCode problem files to add comments, test cases, and create documentation
 ---
-
 # LeetCode Processor
 
 ## Overview
@@ -40,6 +39,7 @@ digraph workflow {
 ### 1. Read and Analyze
 
 First, read the Python file to understand:
+
 - Problem ID and title (from comments)
 - Current implementation state
 - Existing comments or docstrings
@@ -48,18 +48,21 @@ First, read the Python file to understand:
 ### 2. Add Comprehensive Comments
 
 **For the solution class/method, add:**
+
 - Problem description summary
 - Core algorithm/approach explanation
 - Time and space complexity
 - Key insights or tricks used
 
 **For complex logic, add inline comments:**
+
 - Why this approach was chosen
 - What each variable represents
 - Edge cases being handled
 - Optimization techniques
 
 **Example structure:**
+
 ```python
 class Solution:
     """
@@ -80,6 +83,7 @@ class Solution:
 ### 3. Add Runnable Test Cases
 
 **Standard test structure:**
+
 ```python
 if __name__ == "__main__":
     sol = Solution()
@@ -97,13 +101,14 @@ if __name__ == "__main__":
 ```
 
 **Include test cases for:**
+
 - Basic examples from problem statement
 - Edge cases (empty input, single element, etc.)
 - Boundary conditions
 - Large input cases (if relevant)
 
 ### 4. Create Markdown Documentation
-
+一般的leetcode题解文档位于项目根目录/docs/problems/leetcode/*.md，建议参考已有文档
 **Document structure (follow exactly):**
 
 ```markdown
@@ -169,19 +174,21 @@ date_reviewed: []
 ## 复杂度分析
 
 | 解法 | 时间复杂度 | 空间复杂度 | 说明 |
-|------|-----------|-----------|------|
-| 暴力 | O(...) | O(...) | ... |
-| 优化 | O(...) | O(...) | ... |
-| 最优 | O(...) | O(...) | ... |
+| ---- | ---------- | ---------- | ---- |
+| 暴力 | O(...)     | O(...)     | ...  |
+| 优化 | O(...)     | O(...)     | ...  |
+| 最优 | O(...)     | O(...)     | ...  |
 
 ---
 
 ## 易错点总结
 
 ### 1. [Common mistake 1]
+
 [Explanation and fix]
 
 ### 2. [Common mistake 2]
+
 [Explanation and fix]
 
 ---
@@ -195,6 +202,7 @@ date_reviewed: []
 ## 相关题目
 
 - [Problem Name](URL)
+
 ```
 
 ## Key Principles
@@ -281,3 +289,4 @@ Always present solutions in order:
 - [ ] No "thinking traces" in final content
 - [ ] Code is runnable with `python filename.py`
 - [ ] Progressive approach (naive → optimal) is shown
+```
