@@ -11,42 +11,75 @@
 # @lcpr-template-end
 # @lc code=start
 from typing import List
+
 class Solution:
+    """
+    颜色分类 - 荷兰国旗问题
+
+    核心思想：
+    数组中只有 0, 1, 2 三个值，需要原地排序。
+    这是经典的"荷兰国旗问题"。
+
+    三指针法（最优）：
+    - p0：指向0应该放置的位置（从数组开头）
+    - p2：指向2应该放置的位置（从数组末尾）
+    - i：当前遍历位置
+
+    遍历策略：
+    - nums[i] == 0：与 p0 位置交换，p0++，i++
+    - nums[i] == 1：i++
+    - nums[i] == 2：与 p2 位置交换，p2--（i 不递增，因为交换过来的元素需要再判断）
+
+    时间复杂度：O(n)
+    空间复杂度：O(1)
+    """
     def sortColors(self, nums: List[int]) -> None:
         """
         Do not return anything, modify nums in-place instead.
         """
-        # 双指针一次遍历做法
-        # 不是插入元素，而是修改元素
-        # p0 = p1 = 0
-        # for i, x in enumerate(nums):
-        #     nums[i] = 2
-        #     if x <= 1:
-        #         nums[p1] = 1
-        #         p1 += 1
-        #     if x == 0:
-        #         nums[p0] = 0
-        #         p0 += 1
-        # 题目的本意是不让用sort(不只是库内置的sort)，我原来的做法是不恰当的
-        # 计数排序，最快
-        # n = len(nums)
-        # n0,n1,n2 =0,0,0
-        # for i in range(n):
-        #     if nums[i] == 0:
-        #         n0+=1
-        #     elif nums[i] ==1:
-        #         n1+=1
-        #     else:
-        #         n2+=2
-        # for i in range(n):
-        #     if 0<=i<n0:
-        #         nums[i]=0
-        #     elif n0<=i<n0+n1:
-        #         nums[i]=1
-        #     else:
-        #         nums[i]=2
-                
-        # 快速排序：quick_sort(nums,0,len(nums)-1)
+        n = len(nums)
+        p0, p2 = 0, n - 1  # p0指向0该放的位置，p2指向2该放的位置
+        i = 0
+
+        while i <= p2:
+            if nums[i] == 0:
+                # 0 放到 p0 位置
+                nums[i], nums[p0] = nums[p0], nums[i]
+                p0 += 1
+                i += 1
+            elif nums[i] == 1:
+                # 1 不动
+                i += 1
+            else:  # nums[i] == 2
+                # 2 放到 p2 位置
+                nums[i], nums[p2] = nums[p2], nums[i]
+                p2 -= 1
+                # i 不递增，因为交换过来的元素需要再判断
+
+
+# ========== 示例推演：nums = [2,0,2,1,1,0] ==========
+#
+# 初始：p0=0, p2=5, i=0
+# nums = [2, 0, 2, 1, 1, 0]
+#
+# i=0, nums[0]=2: 与 nums[5]交换，p2=4
+#   nums = [0, 0, 2, 1, 1, 2]
+#
+# i=0, nums[0]=0: 与 nums[0]交换，p0=1, i=1
+#   nums = [0, 0, 2, 1, 1, 2]
+#
+# i=1, nums[1]=0: 与 nums[1]交换，p0=2, i=2
+#   nums = [0, 0, 2, 1, 1, 2]
+#
+# i=2, nums[2]=2: 与 nums[4]交换，p2=3
+#   nums = [0, 0, 1, 1, 2, 2]
+#
+# i=2, nums[2]=1: i=3
+#
+# i=3, nums[3]=1: i=4
+#
+# i=4 > p2=3，结束
+# 结果：[0, 0, 1, 1, 2, 2]
 # @lc code=end
 
 
@@ -62,3 +95,19 @@ class Solution:
 
 #
 
+
+if __name__ == "__main__":
+    sol = Solution()
+
+    tests = [
+        [2, 0, 2, 1, 1, 0],
+        [2, 0, 1],
+        [0],
+        [1],
+        [2, 1, 0],
+    ]
+
+    for nums in tests:
+        nums_copy = nums.copy()
+        sol.sortColors(nums_copy)
+        print(f"sortColors({nums}) = {nums_copy}")
