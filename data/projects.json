@@ -1,1 +1,116 @@
-{"lastUpdated":"2026-03-26T00:00:00Z","count":0,"projects":[]}
+{
+  "lastUpdated": "2026-03-26T09:20:43.405Z",
+  "count": 22,
+  "projects": [
+    {
+      "name": "admin-file",
+      "url": "http://www.hanphone.top/admin-file/",
+      "source": "main"
+    },
+    {
+      "name": "AiVoice",
+      "url": "http://www.hanphone.top/AiVoice/",
+      "source": "main"
+    },
+    {
+      "name": "AutoBuy",
+      "url": "http://www.hanphone.top/AutoBuy/",
+      "source": "main"
+    },
+    {
+      "name": "calculator",
+      "url": "http://www.hanphone.top/calculator/",
+      "source": "main"
+    },
+    {
+      "name": "code-training",
+      "url": "https://www.hanphone.top/code-training/",
+      "source": "main"
+    },
+    {
+      "name": "deep-learning-code",
+      "url": "http://www.hanphone.top/deep-learning-code/",
+      "source": "main"
+    },
+    {
+      "name": "edge-ai-smart-waste-sorting",
+      "url": "http://www.hanphone.top/edge-ai-smart-waste-sorting/",
+      "source": "main"
+    },
+    {
+      "name": "generate-poems",
+      "url": "http://www.hanphone.top/generate-poems/",
+      "source": "main"
+    },
+    {
+      "name": "generate-resume",
+      "url": "http://www.hanphone.top/generate-resume/",
+      "source": "main"
+    },
+    {
+      "name": "hanphone-blog-server",
+      "url": "http://www.hanphone.top/hanphone-blog-server/",
+      "source": "master"
+    },
+    {
+      "name": "hanphone-blog-web",
+      "url": "http://www.hanphone.top/hanphone-blog-web/",
+      "source": "master"
+    },
+    {
+      "name": "hanphone-game",
+      "url": "http://www.hanphone.top/hanphone-game/",
+      "source": "main"
+    },
+    {
+      "name": "hanphone-play",
+      "url": "http://www.hanphone.top/hanphone-play/",
+      "source": "main"
+    },
+    {
+      "name": "hanphone-tool",
+      "url": "http://www.hanphone.top/hanphone-tool/",
+      "source": "main"
+    },
+    {
+      "name": "HanphoneJan.github.io",
+      "url": "http://www.hanphone.top/",
+      "source": "main"
+    },
+    {
+      "name": "image-retrieval",
+      "url": "http://www.hanphone.top/image-retrieval/",
+      "source": "main"
+    },
+    {
+      "name": "notes",
+      "url": "http://www.hanphone.top/notes/",
+      "source": "main"
+    },
+    {
+      "name": "OpenWrtTrafficMonitor",
+      "url": "http://www.hanphone.top/OpenWrtTrafficMonitor/",
+      "source": "main"
+    },
+    {
+      "name": "photo-wall",
+      "url": "http://www.hanphone.top/photo-wall/",
+      "source": "main"
+    },
+    {
+      "name": "photo-wall-server",
+      "url": "http://www.hanphone.top/photo-wall-server/",
+      "source": "main"
+    },
+    {
+      "name": "public-pictures",
+      "url": "http://www.hanphone.top/public-pictures/",
+      "source": "main"
+    },
+    {
+      "name": "transformer-practice",
+      "url": "http://www.hanphone.top/transformer-practice/",
+      "source": "main"
+    }
+  ]
+}
