@@ -142,6 +142,12 @@ const config: Config = {
           position: 'right',
           className: 'navbar-github-icon',
         },
+        {
+          href: 'https://hanphone.cn',
+          label: '博客',
+          position: 'right',
+          className: 'navbar-blog-icon',
+        },
       ],
     },
     prism: {
