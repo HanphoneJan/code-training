@@ -173,7 +173,7 @@ async function createConfig(): Promise<Config> {
           },
           {
             href: 'https://hanphone.cn',
-            label: '博客',
+            label: '个人主页',
             position: 'right',
             className: 'navbar-blog-icon',
           },

@@ -134,21 +134,3 @@ body {
 .navbar__link svg[class*="iconExternalLink"] {
   display: none !important;
 }
-
-/* 5. 移动端菜单中图标链接不显示文字 */
-@media (max-width: 996px) {
-  .navbar-github-icon .navbar__link,
-  .navbar-blog-icon .navbar__link,
-  .navbar-github-icon.navbar__link,
-  .navbar-blog-icon.navbar__link {
-    font-size: 0 !important;
-    display: flex;
-    align-items: center;
-  }
-
-  /* 移动端下拉菜单中的图标链接 */
-  .dropdown__link.navbar-github-icon,
-  .dropdown__link.navbar-blog-icon {
-    font-size: 0 !important;
-  }
-}
