@@ -131,6 +131,8 @@ body {
 
 /* 4. 隐藏导航栏外部链接的外链图标 */
 .navbar__link svg[class^="iconExternalLink"],
-.navbar__link svg[class*="iconExternalLink"] {
+.navbar__link svg[class*="iconExternalLink"],
+.dropdown__link svg[class^="iconExternalLink"],
+.dropdown__link svg[class*="iconExternalLink"] {
   display: none !important;
 }
