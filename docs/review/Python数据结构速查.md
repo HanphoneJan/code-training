@@ -1130,6 +1130,79 @@ list(combinations_with_replacement([1,2,3], 2))  # [(1,1),(1,2),(1,3),(2,2),(2,3
 
 ---
 
+## functools 模块 —— lru_cache 记忆化
+
+> `lru_cache`（Least Recently Used Cache）是 Python 提供的**记忆化**（Memoization）装饰器，用于缓存函数的返回值。
+
+### 核心作用
+
+| 作用 | 说明 |
+|------|------|
+| **避免重复计算** | 相同参数的调用直接从缓存获取结果，不再执行函数体 |
+| **优化递归** | 递归问题（如斐波那契、动态规划）中大量子问题被重复计算，记忆化将指数级复杂度降为多项式级 |
+| **提升性能** | 频繁调用的纯函数可大幅减少执行时间 |
+| **控制内存** | 通过 `maxsize` 限制缓存大小，防止内存无限增长 |
+
+### 基本用法
+
+```python
+from functools import lru_cache
+
+@lru_cache(maxsize=128)      # 最多缓存128个不同参数的结果
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# 性能对比
+# 无缓存：O(2^n)，fib(35) 需要数秒
+# 有缓存：O(n)，fib(1000) 瞬间完成
+
+# 查看缓存统计
+print(fibonacci.cache_info())   # CacheInfo(hits=998, misses=1000, maxsize=128, currsize=128)
+fibonacci.cache_clear()         # 清空缓存
+```
+
+### 参数说明
+
+| 参数 | 说明 |
+|------|------|
+| `maxsize` | 最大缓存条目数，设为 `None` 表示无限制。默认128。 |
+| `typed` | 设为 `True` 时，`3` 和 `3.0` 被视为不同参数。默认 `False`。 |
+
+### 算法应用
+
+典型应用场景：递归 DFS、动态规划、字符串拆分等问题。
+
+```python
+# 示例：记忆化 DFS
+@lru_cache(maxsize=None)
+def dfs(state):
+    if 终止条件:
+        return 结果
+    # ... 递归调用 dfs(子状态)
+```
+
+> 相关题目：[LeetCode 139. 单词拆分](https://leetcode.cn/problems/word-break/)
+
+### 注意事项
+
+```python
+# ❌ 错误：参数必须可哈希
+@lru_cache
+def foo(lst: list): ...       # list 不可哈希，会报错
+
+# ✅ 正确：使用可哈希类型
+@lru_cache
+def foo(tup: tuple): ...      # tuple 可哈希
+```
+
+- **仅适用于纯函数**：相同输入永远产生相同输出，无副作用
+- **参数必须可哈希**：`list`、`dict` 等不可哈希类型需转为 `tuple`、`frozenset`
+- **内存权衡**：`maxsize=None` 可能占用大量内存，谨慎使用
+
+---
+
 ## 常用数学函数
 
 ### math 模块
