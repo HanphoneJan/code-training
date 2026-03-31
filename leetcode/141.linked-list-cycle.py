@@ -17,13 +17,22 @@
 from typing import Optional
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
-        node_set=set()
-        while head:
-            if head in node_set:
+        # 快慢指针，真的精妙
+        slow,fast = head,head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
                 return True
-            node_set.add(head)
-            head = head.next
         return False
+        # 使用哈希表存储节点
+        # node_set=set()
+        # while head:
+        #     if head in node_set:
+        #         return True
+        #     node_set.add(head)
+        #     head = head.next
+        # return False
 # @lc code=end
 
 
