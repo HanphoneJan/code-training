@@ -109,8 +109,9 @@ def merge(arr1, arr2):
     result.extend(arr1[i:])
     result.extend(arr2[j:])
     return result
+```
 
-
+```python
 # 原地归并（原地排序版本，实际仍为 O(n) 临时空间）
 def merge_sort_inplace(arr, left=0, right=None):
     """原地归并排序，只返回排序后的数组引用"""
