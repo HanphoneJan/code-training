@@ -143,6 +143,7 @@ async function createConfig(): Promise<Config> {
           {href: 'https://www.hanphone.top/', label: '首页', position: 'left', target: '_self'},
           {href: 'https://www.hanphone.top/docs/intro', label: '文档', position: 'left', target: '_self'},
           {href: 'https://www.hanphone.top/blog', label: '博客', position: 'left', target: '_self'},
+          {href: 'https://www.hanphone.top/stars', label: 'Stars', position: 'left', target: '_self'},
           {
             type: 'dropdown',
             label: '代码训练',

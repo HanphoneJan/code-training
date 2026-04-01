@@ -15,6 +15,7 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+# 实现归并排序还是比较复杂的
 class Solution:
     def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
 
