@@ -149,7 +149,7 @@ def merge(arr1, arr2):
 
 分治策略：选取基准，将数组划分为"小于基准"和"大于基准"两部分。
 
-![快速排序动图演示.gif](https://hanphone.top/gh/HanphoneJan/public-pictures/algorithm/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E5%8A%A8%E5%9B%BC%E6%BC%94%E7%A4%BA.gif)
+![快速排序动图演示.gif](https://hanphone.top/gh/HanphoneJan/public-pictures/algorithm/快速排序动图演示.gif)
 
 ### 核心思想：先排后分
 
