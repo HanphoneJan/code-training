@@ -60,43 +60,67 @@ def bubble_sort(nums):
 
 分治策略：将数组一分为二，分别排序后合并。
 
-### 核心思想
+![归并排序动图演示.gif](https://hanphone.top/gh/HanphoneJan/public-pictures/algorithm/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA.gif)
+
+### 核心思想：先分后合
+
+归并排序的核心是**合并两个已经有序的数组**。
 
 1. **分**：将数组从中间分成两半，递归对每半排序
 2. **治**：合并两个有序数组（双指针法）
 
-![归并排序动图演示.gif](https://hanphone.top/gh/HanphoneJan/public-pictures/algorithm/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA.gif)
+**与快速排序的区别**：归并排序的"分"非常简单（直接中间劈开），但"合"需要额外工作；快速排序则相反，"分"比较复杂（要按大小重新排列），但不需要"合"。
 
-### 复杂度分析
+### 示例推演
 
-- 每层合并工作量：$O(n)$
-- 递归深度：$O(\log n)$
-- 总时间：$O(n\log n)$（最坏、平均、最好都一样）
-- 空间：$O(n)$（合并时需要额外数组）
+假设排序 `[38, 27, 43, 3]`：
+
+**第一步：分解**
+```
+[38, 27, 43, 3]
+    /        \
+[38, 27]  [43, 3]
+  /   \     /   \
+[38] [27] [43] [3]
+```
+
+**第二步：合并**
+```
+[38] [27] → 比较 38 和 27 → [27, 38]
+[43] [3]  → 比较 43 和 3  → [3, 43]
+
+[27, 38] 和 [3, 43] 合并：
+- 27 vs 3  → 取 3,  结果: [3],      右数组剩 [43]
+- 27 vs 43 → 取 27, 结果: [3, 27],   左数组剩 [38]
+- 38 vs 43 → 取 38, 结果: [3, 27, 38], 左数组空
+- 右数组剩余 [43] 全部加入
+
+最终结果: [3, 27, 38, 43]
+```
 
 ### 代码实现
 
 ```python
 def merge_sort(arr):
-    """归并排序：稳定、$O(n\log n)$，但需要 $O(n)$ 额外空间"""
+    """归并排序：稳定、O(nlog n)，但需要 O(n) 额外空间"""
     if len(arr) <= 1:
         return arr
 
-    # 分成两半
+    # 1. 分：从中间分成两半
     mid = len(arr) // 2
     left = merge_sort(arr[:mid])
     right = merge_sort(arr[mid:])
 
-    # 合并两个有序数组
+    # 2. 合：合并两个有序数组
     return merge(left, right)
 
 
 def merge(arr1, arr2):
-    """合并两个有序数组"""
+    """合并两个有序数组（双指针法）"""
     result = []
     i = j = 0
 
-    # 双指针同时遍历
+    # 双指针同时遍历，谁小取谁
     while i < len(arr1) and j < len(arr2):
         if arr1[i] <= arr2[j]:  # <= 保证稳定性
             result.append(arr1[i])
@@ -111,39 +135,13 @@ def merge(arr1, arr2):
     return result
 ```
 
-```python
-# 原地归并（原地排序版本，实际仍为 O(n) 临时空间）
-def merge_sort_inplace(arr, left=0, right=None):
-    """原地归并排序，只返回排序后的数组引用"""
-    if right is None:
-        right = len(arr) - 1
-    if left >= right:
-        return arr
+### 复杂度分析
 
-    mid = (left + right) // 2
-    merge_sort_inplace(arr, left, mid)
-    merge_sort_inplace(arr, mid + 1, right)
-    merge_inplace(arr, left, mid, right)
-    return arr
-
-
-def merge_inplace(arr, left, mid, right):
-    """原地合并 [left, mid] 和 [mid+1, right]"""
-    temp = []
-    i, j = left, mid + 1
-
-    while i <= mid and j <= right:
-        if arr[i] <= arr[j]:
-            temp.append(arr[i])
-            i += 1
-        else:
-            temp.append(arr[j])
-            j += 1
-
-    temp.extend(arr[i:mid + 1])
-    temp.extend(arr[j:right + 1])
-    arr[left:right + 1] = temp  # 切片赋值原地修改
-```
+| 指标 | 复杂度 | 说明 |
+|------|--------|------|
+| 时间 | $O(n \log n)$ | 每层合并工作量 $O(n)$，共 $\log n$ 层 |
+| 空间 | $O(n)$ | 合并时需要临时数组 |
+| 稳定性 | 稳定 | 相等元素保持相对顺序（<= 保证） |
 
 ---
 
@@ -151,62 +149,68 @@ def merge_inplace(arr, left, mid, right):
 
 分治策略：选取基准，将数组划分为"小于基准"和"大于基准"两部分。
 
-### 核心思想
+![快速排序动图演示.gif](https://hanphone.top/gh/HanphoneJan/public-pictures/algorithm/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E5%8A%A8%E5%9B%BC%E6%BC%94%E7%A4%BA.gif)
+
+### 核心思想：先排后分
+
+快速排序的核心是**分区**：把数组按基准值分成左右两部分。
 
 1. **选基准**：从数组选一个元素作为 pivot
 2. **分区**：重新排列，使小于 pivot 的在左，大于的在右
 3. **递归**：对左右子数组递归排序
 
-**关于性能**：
+**与归并排序的区别**：快速排序在递归**之前**就已经完成了排序（分区的过程就是排序），而归并排序是在递归**返回时**才进行排序（合并的过程）。
 
-- **平均和最佳情况**：时间复杂度 $O(n\log n)$，每次分区都能把数组分成均等的两半
-- **最坏情况**：时间复杂度退化到 $O(n^2)$，当每次选的基准都是当前数组的最小值或最大值时
+### 示例推演
 
-![快速排序动图演示.gif](https://hanphone.top/gh/HanphoneJan/public-pictures/algorithm/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E5%8A%A8%E5%9B%BE%E6%BC%94%E7%A4%BA.gif)
+假设排序 `[38, 27, 43, 3, 9, 82, 10]`，选最右元素 10 为 pivot：
 
-### 代码实现（双指针法）
+**第一步：分区过程**
+```
+初始: [38, 27, 43, 3, 9, 82, 10]
+       i                    pivot=10
 
-```python
-def quick_sort(arr, left, right):
-    """快速排序：双指针版本，使用中间值作为 pivot"""
-    if left >= right:
-        return
-    i, j = left, right
-    pivot = arr[(left + right) // 2]  # 选择中间值作为基准点
-    while i <= j:
-        while arr[i] < pivot:  # 找到左边第一个 >= pivot 的元素
-            i += 1
-        while arr[j] > pivot:  # 找到右边第一个 <= pivot 的元素
-            j -= 1
-        if i <= j:
-            arr[i], arr[j] = arr[j], arr[i]  # 交换元素
-            i += 1
-            j -= 1
-    quick_sort(arr, left, j)   # 对左半部分递归排序
-    quick_sort(arr, i, right)  # 对右半部分递归排序
+j=0: 38>10，不交换，i保持-1
+j=1: 27>10，不交换
+j=2: 43>10，不交换
+j=3: 3<=10，i++，交换 arr[0]和arr[3] → [3, 27, 43, 38, 9, 82, 10]
+j=4: 9<=10，i++，交换 arr[1]和arr[4] → [3, 9, 43, 38, 27, 82, 10]
+j=5: 82>10，不交换
+
+最后：把 pivot 放到 i+1 位置
+交换 arr[2]和arr[6] → [3, 9, 10, 38, 27, 82, 43]
+                              ↑
+                           pivot最终位置
 ```
 
-### 代码实现（随机基准 + Lomuto 分区）
+**第二步：递归**
+```
+左半部分 [3, 9] 已有序
+右半部分 [38, 27, 82, 43] 继续排序...
+```
+
+### 代码实现
 
 ```python
 import random
 
-def quick_sort_random(arr, left, right):
-    """快速排序：随机选择基准，避免最坏情况"""
+def quick_sort(arr, left, right):
+    """快速排序：平均 O(nlog n)，原地排序"""
     if left >= right:
         return
-    # 调用分区函数，获取基准值的最终位置
+
+    # 分区，获取 pivot 的最终位置
     p = partition_random(arr, left, right)
+
     # 递归排序左右子数组
-    quick_sort_random(arr, left, p - 1)
-    quick_sort_random(arr, p + 1, right)
+    quick_sort(arr, left, p - 1)
+    quick_sort(arr, p + 1, right)
 
 
 def partition_random(arr, left, right):
-    """随机选择基准，Lomuto 分区方案"""
-    # 随机选择基准索引，避免最坏情况
+    """随机选择基准，避免最坏情况"""
+    # 随机选基准，交换到最右
     random_idx = random.randint(left, right)
-    # 将随机基准点交换到区间最右端
     arr[random_idx], arr[right] = arr[right], arr[random_idx]
 
     pivot = arr[right]
@@ -217,35 +221,20 @@ def partition_random(arr, left, right):
             i += 1
             arr[i], arr[j] = arr[j], arr[i]
 
-    # 将基准值放到正确位置
+    # pivot 放到正确位置
     arr[i + 1], arr[right] = arr[right], arr[i + 1]
     return i + 1
 ```
 
-### 快速排序模板（经典写法）
+### 复杂度分析
 
-```python
-def quick_sort(arr, left, right):
-    if left >= right:
-        return
+| 情况 | 时间复杂度 | 空间复杂度 | 说明 |
+|------|------------|------------|------|
+| 最好/平均 | $O(n \log n)$ | $O(\log n)$ | 每次分区均匀，递归深度 $\log n$ |
+| 最坏 | $O(n^2)$ | $O(n)$ | 每次分区极不均匀（如数组已有序） |
+| 稳定性 | - | - | 不稳定（会交换相等元素的位置） |
 
-    pivot = partition(arr, left, right)
-    quick_sort(arr, left, pivot - 1)
-    quick_sort(arr, pivot + 1, right)
-
-def partition(arr, left, right):
-    """Lomuto 分区：选最右元素作为 pivot"""
-    pivot = arr[right]
-    i = left - 1
-
-    for j in range(left, right):
-        if arr[j] <= pivot:
-            i += 1
-            arr[i], arr[j] = arr[j], arr[i]
-
-    arr[i + 1], arr[right] = arr[right], arr[i + 1]
-    return i + 1
-```
+> **为什么选随机基准？** 避免遇到已排序数组时退化为 $O(n^2)$。随机化后期望时间复杂度为 $O(n \log n)$。
 
 ---
 
