@@ -207,7 +207,7 @@ class Solution:
         m, n = len(nums1), len(nums2)
         left, right = 0, m  # 在 nums1 的 [0, m] 范围内二分
 
-        while left <= right:
+        while left < right:  # 不使用 <=：收缩到单点时自然结束，最后统一处理边界
             # i: nums1 的划分点（切在 i 前面，即左边有 i 个元素）
             # j: nums2 的划分点
             i = (left + right) // 2
@@ -238,6 +238,19 @@ class Solution:
                 # nums2 的左半部分太大，意味着 i 需要增大
                 left = i + 1
 
+
+        # 循环结束时 left == right，处理最后一个切割点
+        i = left
+        j = (m + n + 1) // 2 - i
+        nums1_left = float('-inf') if i == 0 else nums1[i - 1]
+        nums1_right = float('inf') if i == m else nums1[i]
+        nums2_left = float('-inf') if j == 0 else nums2[j - 1]
+        nums2_right = float('inf') if j == n else nums2[j]
+
+        if (m + n) % 2 == 0:
+            return (max(nums1_left, nums2_left) + min(nums1_right, nums2_right)) / 2
+        else:
+            return max(nums1_left, nums2_left)
         # 理论上不会执行到这里，因为题目保证有解
         raise ValueError("No solution found")
 ```

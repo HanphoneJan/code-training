@@ -21,7 +21,7 @@ class Solution:
     用两次二分查找分别定位左边界和右边界。
 
     找左边界的技巧：
-    当 nums[mid] == target 时，不立即返回，而是收缩右边界（right = mid - 1），
+    当 nums[mid] == target 时，不立即返回，而是收缩右边界（right = mid），
     继续向左查找，看是否还有更小的索引也是 target。
 
     找右边界的技巧：
@@ -33,29 +33,29 @@ class Solution:
     """
     def searchRange(self, nums: List[int], target: int) -> List[int]:
         n = len(nums)
-        left, right = 0, n - 1
         result_left, result_right = -1, -1
 
         # 第一次二分：找左边界
-        while left <= right:
-            mid = left + (right - left) // 2  # 防止溢出的中间值计算
-            if nums[mid] == target:
-                result_left = mid      # 记录当前位置
-                right = mid - 1        # 继续向左查找
-            elif nums[mid] < target:
-                left = mid + 1         # 目标在右半区
-            else:
-                right = mid - 1        # 目标在左半区
-
-        # 第二次二分：找右边界
-        left, right = 0, n - 1
-        while left <= right:
+        left, right = 0, n  # 左闭右开区间
+        while left < right:  # 不使用 <=：左闭右开写法更统一，循环结束时 left 指向第一个 >= target 的位置
             mid = left + (right - left) // 2
             if nums[mid] == target:
-                result_right = mid     # 记录当前位置
-                left = mid + 1         # 继续向右查找
+                result_left = mid   # 记录当前位置
+                right = mid         # 继续向左查找
+            elif nums[mid] < target:
+                left = mid + 1      # 目标在右半区
+            else:
+                right = mid         # 目标在左半区
+
+        # 第二次二分：找右边界
+        left, right = 0, n
+        while left < right:  # 不使用 <=：左闭右开写法更统一
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                result_right = mid  # 记录当前位置
+                left = mid + 1      # 继续向右查找
             elif nums[mid] > target:
-                right = mid - 1
+                right = mid
             else:
                 left = mid + 1
 
@@ -65,16 +65,16 @@ class Solution:
 # ========== 示例推演：nums = [5,7,7,8,8,10], target = 8 ==========
 #
 # 找左边界：
-#   left=0, right=5, mid=2, nums[2]=7 < 8, left=3
-#   left=3, right=5, mid=4, nums[4]=8 == 8, result_left=4, right=3
-#   left=3, right=3, mid=3, nums[3]=8 == 8, result_left=3, right=2
-#   left=3 > right=2，结束，result_left=3
+#   left=0, right=6, mid=3, nums[3]=8 == 8, result_left=3, right=3
+#   left=0, right=3, mid=1, nums[1]=7 < 8, left=2
+#   left=2, right=3, mid=2, nums[2]=7 < 8, left=3
+#   left=3 == right=3，结束，result_left=3
 #
 # 找右边界：
-#   left=0, right=5, mid=2, nums[2]=7 < 8, left=3
-#   left=3, right=5, mid=4, nums[4]=8 == 8, result_right=4, left=5
-#   left=5, right=5, mid=5, nums[5]=10 > 8, right=4
-#   left=5 > right=4，结束，result_right=4
+#   left=0, right=6, mid=3, nums[3]=8 == 8, result_right=3, left=4
+#   left=4, right=6, mid=5, nums[5]=10 > 8, right=5
+#   left=4, right=5, mid=4, nums[4]=8 == 8, result_right=4, left=5
+#   left=5 == right=5，结束，result_right=4
 #
 # 结果：[3, 4]
 # @lc code=end

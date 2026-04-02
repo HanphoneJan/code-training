@@ -78,9 +78,9 @@ class Solution:
 
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
         m, n = len(matrix), len(matrix[0])
-        left, right = 0, m * n - 1
+        left, right = 0, m * n  # 将二维矩阵视为一维有序数组，左闭右开区间
 
-        while left <= right:
+        while left < right:  # 不使用 <=：左闭右开写法更统一
             mid = (left + right) // 2
             x = matrix[mid // n][mid % n]
             if x == target:
@@ -88,7 +88,7 @@ class Solution:
             elif x < target:
                 left = mid + 1
             else:
-                right = mid - 1
+                right = mid  # 收缩右边界到 mid
         return False
 ```
 

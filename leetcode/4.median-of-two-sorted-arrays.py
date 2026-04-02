@@ -42,7 +42,7 @@ class Solution:
         # i 表示 nums1 中前 i 个元素被分到左边部分
         left, right = 0, m
 
-        while left <= right:
+        while left < right:  # 不使用 <=：收缩到单点时自然结束，最后统一处理边界
             # i：nums1 的切割位置（表示 nums1[0:i] 在左边）
             i = (left + right) // 2
 
@@ -51,40 +51,35 @@ class Solution:
             j = (m + n + 1) // 2 - i
 
             # 计算切割后的四个边界值
-            # nums1_left：nums1 左边最后一个元素（切割位置的前一个）
-            # 如果 i == 0，说明 nums1 所有元素都在右边，左边没有元素，用 -inf 表示
             nums1_left = float('-inf') if i == 0 else nums1[i - 1]
-
-            # nums1_right：nums1 右边第一个元素（切割位置的元素）
-            # 如果 i == m，说明 nums1 所有元素都在左边，右边没有元素，用 +inf 表示
             nums1_right = float('inf') if i == m else nums1[i]
-
-            # 同理计算 nums2 的边界
             nums2_left = float('-inf') if j == 0 else nums2[j - 1]
             nums2_right = float('inf') if j == n else nums2[j]
 
             # 检查切割是否正确：左边最大值 <= 右边最小值
             if nums1_left <= nums2_right and nums2_left <= nums1_right:
                 # 找到正确的切割点！
-
-                # 判断总长度是奇数还是偶数
                 if (m + n) % 2 == 0:
-                    # 偶数：中位数是左边最大值和右边最小值的平均
-                    # 左边最大值 = max(nums1_left, nums2_left)
-                    # 右边最小值 = min(nums1_right, nums2_right)
                     return (max(nums1_left, nums2_left) + min(nums1_right, nums2_right)) / 2
                 else:
-                    # 奇数：中位数是左边最大值（因为左边比右边多一个元素）
                     return max(nums1_left, nums2_left)
-
             elif nums1_left > nums2_right:
-                # nums1 的左边太大了，需要向左移动切割点
-                # 让 nums1 贡献更少的元素到左边
                 right = i - 1
             else:
-                # nums2 的左边太大了（即 nums1_left < nums2_left 且 nums1_left < nums2_right）
-                # 需要向右移动切割点，让 nums1 贡献更多元素到左边
                 left = i + 1
+
+        # 循环结束时 left == right，处理最后一个切割点
+        i = left
+        j = (m + n + 1) // 2 - i
+        nums1_left = float('-inf') if i == 0 else nums1[i - 1]
+        nums1_right = float('inf') if i == m else nums1[i]
+        nums2_left = float('-inf') if j == 0 else nums2[j - 1]
+        nums2_right = float('inf') if j == n else nums2[j]
+
+        if (m + n) % 2 == 0:
+            return (max(nums1_left, nums2_left) + min(nums1_right, nums2_right)) / 2
+        else:
+            return max(nums1_left, nums2_left)
 
 
 # ========== 示例推演：nums1 = [1, 3], nums2 = [2] ==========

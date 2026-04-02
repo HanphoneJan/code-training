@@ -2,7 +2,7 @@
 # @lc app=leetcode.cn id=53 lang=python3
 # @lcpr version=30204
 #
-# [53] 最大子数组和
+# 
 #
 
 

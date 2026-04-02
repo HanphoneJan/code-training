@@ -30,8 +30,8 @@ class Solution:
         时间复杂度：O(log n)，本质上只是多了一步判断有序段，不影响复杂度
         """
         n = len(nums)
-        left, right = 0, len(nums) - 1
-        while left <= right:
+        left, right = 0, len(nums)  # 右边界设为 len(nums)，左闭右开区间
+        while left < right:  # 不使用 <=：左闭右开写法更统一，循环结束时 left == right 即为答案
             mid = (right - left) // 2 + left  # 防止整数溢出的写法
             if nums[mid] == target:
                 return mid
@@ -39,16 +39,16 @@ class Solution:
             if nums[left] <= nums[mid]:
                 # 左半段有序：判断 target 是否落在左半段的范围内
                 if nums[left] <= target < nums[mid]:
-                    right = mid - 1  # target 在左半段，搜索范围缩小到左边
+                    right = mid        # target 在左半段，搜索范围缩小到左边
                 else:
-                    left = mid + 1   # target 不在左半段，去右边找
+                    left = mid + 1     # target 不在左半段，去右边找
             else:
-                # 左半段无序，则右半段 [mid, right] 一定有序
+                # 左半段无序，则右半段 [mid, right-1] 一定有序
                 # 判断 target 是否落在右半段的范围内
-                if nums[mid] < target <= nums[right]:
-                    left = mid + 1   # target 在右半段，搜索范围缩小到右边
+                if nums[mid] < target <= nums[right - 1]:
+                    left = mid + 1     # target 在右半段，搜索范围缩小到右边
                 else:
-                    right = mid - 1  # target 不在右半段，去左边找
+                    right = mid        # target 不在右半段，去左边找
         return -1
 # @lc code=end
 

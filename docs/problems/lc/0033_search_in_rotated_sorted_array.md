@@ -103,9 +103,9 @@ from typing import List
 
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
-        left, right = 0, len(nums) - 1
+        left, right = 0, len(nums)  # 右边界设为 len(nums)，左闭右开区间
 
-        while left <= right:
+        while left < right:  # 不使用 <=：左闭右开写法更统一
             mid = (left + right) // 2
 
             if nums[mid] == target:
@@ -113,14 +113,14 @@ class Solution:
 
             if nums[left] <= nums[mid]:  # 左半段 [left, mid] 有序
                 if nums[left] <= target < nums[mid]:
-                    right = mid - 1      # target 在左半段内，舍弃右半
+                    right = mid      # target 在左半段内，舍弃右半
                 else:
                     left = mid + 1       # target 不在左半段，搜索右半
-            else:                        # 右半段 [mid, right] 有序
-                if nums[mid] < target <= nums[right]:
+            else:                        # 右半段 [mid, right-1] 有序
+                if nums[mid] < target <= nums[right - 1]:
                     left = mid + 1       # target 在右半段内，舍弃左半
                 else:
-                    right = mid - 1      # target 不在右半段，搜索左半
+                    right = mid      # target 不在右半段，搜索左半
 
         return -1
 ```
@@ -182,7 +182,7 @@ class Solution:
 
 - **target 在有序段的范围是半开区间**：
   - 左半段有序：`nums[left] <= target < nums[mid]`（注意右端是严格小于，因为 `nums[mid]` 已在循环开头单独判断）。
-  - 右半段有序：`nums[mid] < target <= nums[right]`（左端是严格大于）。
+  - 右半段有序：`nums[mid] < target <= nums[right - 1]`（左端是严格大于）。
 
 - **不要用第二次 find rotation point 再二分**：这种思路虽然正确，但实现复杂，且实际上一次二分就能解决，无需两次。
 

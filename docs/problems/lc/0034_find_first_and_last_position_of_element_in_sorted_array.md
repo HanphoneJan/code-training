@@ -84,14 +84,14 @@ class Solution:
 
 **算法步骤**：
 1. 第一次二分查找：找左边界
-   - `nums[mid] == target`：记录位置，继续向左找（`right = mid - 1`）
+   - `nums[mid] == target`：记录位置，继续向左找（`right = mid`）
    - `nums[mid] < target`：目标在右半区（`left = mid + 1`）
-   - `nums[mid] > target`：目标在左半区（`right = mid - 1`）
+   - `nums[mid] > target`：目标在左半区（`right = mid`）
 
 2. 第二次二分查找：找右边界
    - `nums[mid] == target`：记录位置，继续向右找（`left = mid + 1`）
    - `nums[mid] < target`：目标在右半区（`left = mid + 1`）
-   - `nums[mid] > target`：目标在左半区（`right = mid - 1`）
+   - `nums[mid] > target`：目标在左半区（`right = mid`）
 
 **为什么正确**：
 - 每次找到 target 时不立即返回，而是继续向一边查找，确保找到的是最左/最右的位置
@@ -126,29 +126,29 @@ class Solution:
 
     def searchRange(self, nums: List[int], target: int) -> List[int]:
         n = len(nums)
-        left, right = 0, n - 1
         result_left, result_right = -1, -1
 
         # 第一次二分：找左边界
-        while left <= right:
-            mid = left + (right - left) // 2  # 防止溢出的中间值计算
-            if nums[mid] == target:
-                result_left = mid      # 记录当前位置
-                right = mid - 1        # 继续向左查找
-            elif nums[mid] < target:
-                left = mid + 1         # 目标在右半区
-            else:
-                right = mid - 1        # 目标在左半区
-
-        # 第二次二分：找右边界
-        left, right = 0, n - 1
-        while left <= right:
+        left, right = 0, n  # 左闭右开区间
+        while left < right:  # 不使用 <=：左闭右开写法更统一
             mid = left + (right - left) // 2
             if nums[mid] == target:
-                result_right = mid     # 记录当前位置
-                left = mid + 1         # 继续向右查找
+                result_left = mid   # 记录当前位置
+                right = mid         # 继续向左查找
+            elif nums[mid] < target:
+                left = mid + 1      # 目标在右半区
+            else:
+                right = mid         # 目标在左半区
+
+        # 第二次二分：找右边界
+        left, right = 0, n
+        while left < right:  # 不使用 <=：左闭右开写法更统一
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                result_right = mid  # 记录当前位置
+                left = mid + 1      # 继续向右查找
             elif nums[mid] > target:
-                right = mid - 1
+                right = mid
             else:
                 left = mid + 1
 
@@ -235,16 +235,16 @@ mid = (left + right) // 2         # 可能溢出
 
 ```python
 def binary_search(nums, target):
-    left, right = 0, len(nums) - 1
-    while left <= right:
+    left, right = 0, len(nums)  # 左闭右开区间
+    while left < right:  # 不使用 <=：左闭右开写法更统一
         mid = left + (right - left) // 2
         if nums[mid] == target:
             return mid
         elif nums[mid] < target:
             left = mid + 1
         else:
-            right = mid - 1
-    return -1
+            right = mid  # 收缩右边界到 mid
+    return -1 if left >= len(nums) or nums[left] != target else left
 ```
 
 ---

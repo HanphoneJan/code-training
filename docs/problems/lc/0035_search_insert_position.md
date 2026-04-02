@@ -75,12 +75,11 @@ class Solution:
 - `left` 就是第一个大于等于 target 的位置
 
 **算法步骤**：
-1. 初始化 `left = 0, right = n - 1`
-2. 循环条件 `left <= right`：
-   - `nums[mid] == target`：找到，返回 mid
-   - `nums[mid] > target`：target 在左半区，`right = mid - 1`
+1. 初始化 `left = 0, right = n`
+2. 循环条件 `left < right`：
+   - `nums[mid] >= target`：target 在左半区（或已找到），`right = mid`
    - `nums[mid] < target`：target 在右半区，`left = mid + 1`
-3. 未找到，返回 left
+3. 循环结束 `left == right`，返回 left
 
 ---
 
@@ -112,18 +111,15 @@ class Solution:
 
     def searchInsert(self, nums: List[int], target: int) -> int:
         n = len(nums)
-        left, right = 0, n - 1
+        left, right = 0, n  # 右边界设为 n，左闭右开区间
 
-        while left <= right:
+        while left < right:  # 不使用 <=：左闭右开写法更统一，循环结束时 left == right 即为答案
             mid = left + (right - left) // 2
-            if nums[mid] == target:
-                return mid           # 找到 target，返回索引
-            elif nums[mid] > target:
-                right = mid - 1      # target 在左半区
+            if nums[mid] >= target:
+                right = mid       # 收缩右边界到 mid
             else:
-                left = mid + 1       # target 在右半区
+                left = mid + 1    # target 在右半区
 
-        # 未找到 target，left 就是插入位置
         return left
 ```
 

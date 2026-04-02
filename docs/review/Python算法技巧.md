@@ -24,16 +24,16 @@ last_updated: 2026-03-05
 ```python
 def binary_search(arr: List[int], target: int) -> int:
     """在有序数组中查找target，返回索引，不存在返回-1"""
-    left, right = 0, len(arr) - 1
-    while left <= right:
+    left, right = 0, len(arr)  # 左闭右开区间
+    while left < right:  # 不使用 <=：左闭右开写法更统一，循环结束时 left 即为答案位置
         mid = left + (right - left) // 2
         if arr[mid] == target:
             return mid
         elif arr[mid] < target:
             left = mid + 1
         else:
-            right = mid - 1
-    return -1
+            right = mid  # 收缩右边界到 mid
+    return -1 if left >= len(arr) or arr[left] != target else left
 ```
 
 ### 二分查找变体

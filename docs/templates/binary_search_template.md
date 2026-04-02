@@ -19,9 +19,9 @@ def binary_search(arr: List[int], target: int) -> int:
     
     返回：目标值的索引，不存在返回 -1
     """
-    left, right = 0, len(arr) - 1
+    left, right = 0, len(arr)  # 右边界设为 len(arr)，左闭右开区间
     
-    while left <= right:
+    while left < right:  # 不使用 <=：左闭右开写法更统一，循环结束时 left 指向可能的位置
         mid = left + (right - left) // 2  # 防止溢出
         
         if arr[mid] == target:
@@ -29,9 +29,9 @@ def binary_search(arr: List[int], target: int) -> int:
         elif arr[mid] < target:
             left = mid + 1
         else:
-            right = mid - 1
+            right = mid  # 收缩右边界到 mid
     
-    return -1
+    return -1 if left >= len(arr) or arr[left] != target else left
 ```
 
 ## 查找左边界
@@ -125,9 +125,9 @@ def search_rotated(arr: List[int], target: int) -> int:
     在旋转排序数组中查找
     例如：[4,5,6,7,0,1,2]
     """
-    left, right = 0, len(arr) - 1
+    left, right = 0, len(arr)  # 右边界设为 len(arr)，左闭右开区间
     
-    while left <= right:
+    while left < right:  # 不使用 <=：左闭右开写法更统一
         mid = left + (right - left) // 2
         
         if arr[mid] == target:
@@ -136,14 +136,14 @@ def search_rotated(arr: List[int], target: int) -> int:
         # 判断哪一半是有序的
         if arr[left] <= arr[mid]:  # 左半部分有序
             if arr[left] <= target < arr[mid]:
-                right = mid - 1
+                right = mid
             else:
                 left = mid + 1
         else:  # 右半部分有序
-            if arr[mid] < target <= arr[right]:
+            if arr[mid] < target <= arr[right - 1]:
                 left = mid + 1
             else:
-                right = mid - 1
+                right = mid
     
     return -1
 ```
@@ -222,9 +222,9 @@ def sqrt(x: int) -> int:
     if x <= 1:
         return x
     
-    left, right = 0, x
+    left, right = 0, x + 1  # 左闭右开区间，右边界设为 x+1
     
-    while left <= right:
+    while left < right:  # 不使用 <=：左闭右开写法更统一
         mid = left + (right - left) // 2
         
         if mid * mid == x:
@@ -232,9 +232,9 @@ def sqrt(x: int) -> int:
         elif mid * mid < x:
             left = mid + 1
         else:
-            right = mid - 1
+            right = mid  # 收缩右边界到 mid
     
-    return right
+    return left - 1
 ```
 
 ## 答案二分（最小化最大值）
@@ -322,14 +322,9 @@ def max_min_template(arr: List[int], k: int) -> int:
 ### 1. 边界选择
 
 ```python
-# 左闭右闭 [left, right]
-left, right = 0, len(arr) - 1
-while left <= right:
-    ...
-
-# 左闭右开 [left, right)
+# 左闭右开 [left, right) —— 推荐写法，区间语义更清晰
 left, right = 0, len(arr)
-while left < right:
+while left < right:  # 不使用 <=：左闭右开区间更统一，循环结束时 left == right 即为答案
     ...
 ```
 

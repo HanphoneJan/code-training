@@ -163,31 +163,14 @@ def sliding_window(s):
 
 对于不重复的升序数组：`left`指向了数组中第一个大于 `target`的元素的索引，`left`的值等于数组中小于 `target`的元素个数
 
-#### 闭区间写法
+#### 左闭右开写法（推荐）
 
-循环结束时，left = right + 1
-
-```python
-# 闭区间写法
-left, right = 0, n-1
-while left<=right:
-	mid = int(left+(right-left)/2)
-	if(nums[mid]==target):
-		return mid
-	elif(nums[mid]>target):
-		right = mid -1
-	else:
-		left = mid +1
-```
-
-#### 开区间写法
-
-循环结束的唯一条件是 `left == right`
+循环结束的唯一条件是 `left == right`
 
 ```python
-# 左闭右开
-left, right = 0, n  # 左闭右开区间[0, n)
-while left < right:  # 区间非空时继续（left < right）
+# 左闭右开写法（推荐）
+left, right = 0, n  # 右边界设为 n，左闭右开区间
+while left < right:  # 不使用 <=：左闭右开写法更统一，循环结束时 left 即为答案位置
 	mid = left + (right - left) // 2  # 避免溢出
 	if nums[mid] == target:
 		return mid  # 找到目标，返回索引
@@ -195,7 +178,8 @@ while left < right:  # 区间非空时继续（left < right）
 		right = mid  # 目标在左区间[left, mid)
 	else:
 		left = mid + 1  # 目标在右区间[mid+1, right)
-return -1  # 未找到目标
+
+return -1 if left >= n or nums[left] != target else left
 ```
 
 `right` 始终表示 “搜索范围的下一个不包含的位置”
