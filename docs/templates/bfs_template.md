@@ -1,7 +1,7 @@
 ---
 title: BFS 模板
-  category: 代码模板
-  last_updated: 2026-02-25
+category: 代码模板
+last_updated: 2026-02-25
 ---
 # BFS（广度优先搜索）模板
 
