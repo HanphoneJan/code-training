@@ -7,25 +7,23 @@
 
 
 # @lcpr-template-start
+from typing import List
 
 # @lcpr-template-end
 # @lc code=start
-from typing import List
-
-
 class Solution:
     """
-    杨辉三角 - 动态规划
+    118. 杨辉三角 - 动态规划
 
     核心思想：
-    杨辉三角的特点：
+    杨辉三角的每个数字都等于它上方两数之和。
     1. 每行的第一个和最后一个元素为 1
     2. 其他元素 = 上一行的前一列 + 上一行的当前列
 
     状态转移方程：
     triangle[i][j] = triangle[i-1][j-1] + triangle[i-1][j]
 
-    时间复杂度：O(numRows²)
+    时间复杂度：O(numRows²)，需要生成 numRows 行，第 i 行有 i 个元素
     空间复杂度：O(numRows²)，存储结果
     """
 
@@ -36,16 +34,18 @@ class Solution:
         triangle = []
 
         for i in range(numRows):
-            # 创建当前行，初始化为1
+            # 创建当前行，初始化为1（首尾元素保持为1）
             row = [1] * (i + 1)
 
-            # 计算中间元素（首尾元素保持为1）
+            # 计算中间元素（首尾元素保持为1，无需计算）
             for j in range(1, i):
+                # 当前元素 = 左上方的数 + 正上方的数
                 row[j] = triangle[i - 1][j - 1] + triangle[i - 1][j]
 
             triangle.append(row)
 
         return triangle
+
         # 极简写法
         # c = [[1] * (i + 1) for i in range(numRows)]
         # for i in range(2, numRows):
@@ -58,7 +58,6 @@ class Solution:
 # @lc code=end
 
 
-
 #
 # @lcpr case=start
 # 5\n
@@ -69,7 +68,6 @@ class Solution:
 # @lcpr case=end
 
 
-# 测试用例
 if __name__ == "__main__":
     sol = Solution()
 
@@ -77,13 +75,15 @@ if __name__ == "__main__":
         (5, [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1]]),
         (1, [[1]]),
         (2, [[1], [1, 1]]),
+        (3, [[1], [1, 1], [1, 2, 1]]),
+        (0, []),
     ]
 
     print("杨辉三角 - 测试开始")
     for i, (numRows, expected) in enumerate(tests, 1):
         result = sol.generate(numRows)
         passed = result == expected
-        status = "✓ PASS" if passed else "✗ FAIL"
+        status = "PASS" if passed else "FAIL"
         print(f"测试 {i}: numRows={numRows} -> {status}")
         if not passed:
             print(f"  输出: {result}")
