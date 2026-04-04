@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-04-03T04:57:57.242Z",
-  "count": 26,
+  "lastUpdated": "2026-04-04T04:43:30.670Z",
+  "count": 30,
   "projects": [
     {
       "name": "admin-file",
@@ -13,6 +13,11 @@
       "source": "main"
     },
     {
+      "name": "c-code",
+      "url": "http://www.hanphone.top/c-code/",
+      "source": "main"
+    },
+    {
       "name": "calculator",
       "url": "http://www.hanphone.top/calculator/",
       "source": "main"
@@ -20,6 +25,16 @@
     {
       "name": "code-training",
       "url": "https://www.hanphone.top/code-training/",
+      "source": "main"
+    },
+    {
+      "name": "crawler",
+      "url": "http://www.hanphone.top/crawler/",
+      "source": "main"
+    },
+    {
+      "name": "d2l-code",
+      "url": "http://www.hanphone.top/d2l-code/",
       "source": "main"
     },
     {
@@ -51,6 +66,11 @@
       "name": "hanphone-blog-web",
       "url": "http://www.hanphone.top/hanphone-blog-web/",
       "source": "master"
+    },
+    {
+      "name": "hanphone-chat",
+      "url": "http://www.hanphone.top/hanphone-chat/",
+      "source": "main"
     },
     {
       "name": "hanphone-game",
