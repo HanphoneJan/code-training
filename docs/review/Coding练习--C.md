@@ -1,5 +1,9 @@
-# 数据结构
+# Coding练习--C
+
+## 数据结构
+
 ### 链表
+
 ```c
 #include <stdio.h>
 #include <stdlib.h>
@@ -82,11 +86,11 @@ SNode* cSearch(SNode* head, int data) {
     return NULL;
 }
 
-}    
+}  
 ```
 
 ### 栈（Stack）
-​
+
 
 ```c
 #include <stdio.h>
@@ -292,9 +296,8 @@ int main() {
     bfsSimulation();
 
     return 0;
-}    
+}  
 ```
-
 
 - 应用：文件系统目录结构、数据库索引、编译原理语法树。
 
@@ -474,10 +477,7 @@ void postOrder(TreeNode *root) {
 }
 ```
 
-
-
 ### 图（Graph）
-
 
 ```c
 #include <stdio.h>
@@ -686,7 +686,8 @@ void dijkstra(GraphMatrix* graph, int start) {
 }
 ```
 
-# 算法
+## 算法
+
 ### 排序算法
 
 ```c
@@ -877,9 +878,8 @@ int main() {
 
     return 0;
 }
-    
+  
 ```
-
 
 ### 查找算法
 
@@ -1043,7 +1043,7 @@ int main() {
 
     return 0;
 }
-    
+  
 ```
 
 ### 字符串算法
@@ -1138,6 +1138,5 @@ int main() {
     }
 
     return 0;
-}    
+}  
 ```
-
