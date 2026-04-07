@@ -1,28 +1,11 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import fs from 'fs';
-import path from 'path';
 
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...
 
-// 加载 GitHub Pages 项目列表
-function loadProjects() {
-  try {
-    const dataPath = path.join(__dirname, 'data', 'projects.json');
-    if (fs.existsSync(dataPath)) {
-      const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-      return data.projects || [];
-    }
-  } catch (e) {
-    console.warn('Failed to load projects:', e.message);
-  }
-  return [];
-}
-
 async function createConfig(): Promise<Config> {
-  const projects = loadProjects();
 
   return {
     title: 'HanphoneJan 的开荒地',
@@ -144,6 +127,7 @@ async function createConfig(): Promise<Config> {
           {href: 'https://www.hanphone.top/docs/intro', label: '文档', position: 'left', target: '_self'},
           {href: 'https://www.hanphone.top/blog', label: '博客', position: 'left', target: '_self'},
           {href: 'https://www.hanphone.top/stars', label: 'Stars', position: 'left', target: '_self'},
+          {href: 'https://www.hanphone.top/projects', label: '项目', position: 'left', target: '_self'},
           {
             type: 'dropdown',
             label: '代码训练',
@@ -156,16 +140,6 @@ async function createConfig(): Promise<Config> {
               {to: '/category/-%E5%A4%8D%E4%B9%A0%E7%B3%BB%E7%BB%9F', label: '总结盘点'},
             ],
           },
-          // 动态项目下拉菜单（仅当有项目时显示）
-          ...(projects.length > 0 ? [{
-            type: 'dropdown' as const,
-            label: '项目',
-            position: 'left' as const,
-            items: projects.map((p: {name: string, url: string}) => ({
-              label: p.name,
-              href: p.url,
-            })),
-          }] : []),
           {
             href: 'https://github.com/hanphonejan/code-training',
             label: 'GitHub',
