@@ -252,21 +252,124 @@ q.rotate(1)           # 向右旋转
 - 左子节点索引：`2 * i + 1`
 - 右子节点索引：`2 * i + 2`
 
-### 堆操作
+### 堆的手动实现
 
-#### 插入元素
+```python
+class MinHeap:
+    """小顶堆手动实现"""
 
-1. 将要插入的元素放到最后
-2. 从底向上，如果父结点比该元素小，则该节点和父结点交换，直到无法交换
+    def __init__(self):
+        self.heap = []  # 使用数组存储堆
 
-#### 删除元素
+    def _parent(self, i: int) -> int:
+        """获取父节点索引"""
+        return (i - 1) // 2
 
-需要多次查找最大元素或者最小元素的时候，可以利用堆来实现。
+    def _left(self, i: int) -> int:
+        """获取左子节点索引"""
+        return 2 * i + 1
 
-删除堆顶元素后，为了保持堆的性质，需要对堆的结构进行调整，我们将这个过程称之为"**堆化**"，堆化的方法分为两种：
+    def _right(self, i: int) -> int:
+        """获取右子节点索引"""
+        return 2 * i + 2
 
-- **自底向上堆化**：首先删除堆顶元素，使得数组中下标为 1 的位置空出。比较根结点的左子节点和右子节点，将较大的元素填充到根结点（下标为 1）的位置。一直循环比较空出位置的左右子节点，并将较大者移至空位，直到堆的最底部。
-- **自顶向下堆化**：自顶向下的堆化用一个词形容就是"石沉大海"，那么第一件事情，就是把石头抬起来，从海面扔下去。这个石头就是堆的最后一个元素，我们将最后一个元素移动到堆顶。然后开始将这个石头沉入海底，不停与左右子节点的值进行比较，和较大的子节点交换位置，直到无法交换位置。推荐使用。
+    def _swap(self, i: int, j: int):
+        """交换两个位置的元素"""
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+
+    def _sift_up(self, i: int):
+        """上浮：将索引i处的元素向上调整"""
+        parent = self._parent(i)
+        # 如果当前节点小于父节点，交换并继续上浮
+        if i > 0 and self.heap[i] < self.heap[parent]:
+            self._swap(i, parent)
+            self._sift_up(parent)
+
+    def _sift_down(self, i: int):
+        """下沉：将索引i处的元素向下调整"""
+        min_idx = i
+        left = self._left(i)
+        right = self._right(i)
+
+        # 找出当前节点和左右子节点中的最小值
+        if left < len(self.heap) and self.heap[left] < self.heap[min_idx]:
+            min_idx = left
+        if right < len(self.heap) and self.heap[right] < self.heap[min_idx]:
+            min_idx = right
+
+        # 如果最小值不是当前节点，交换并继续下沉
+        if i != min_idx:
+            self._swap(i, min_idx)
+            self._sift_down(min_idx)
+
+    def push(self, x: int):
+        """插入元素"""
+        self.heap.append(x)           # 先放到末尾
+        self._sift_up(len(self.heap) - 1)  # 再上浮到正确位置
+
+    def pop(self) -> int:
+        """弹出堆顶元素"""
+        if not self.heap:
+            raise IndexError("pop from empty heap")
+
+        min_val = self.heap[0]
+        last_val = self.heap.pop()
+
+        # 如果堆不为空，将最后一个元素放到堆顶，然后下沉
+        if self.heap:
+            self.heap[0] = last_val
+            self._sift_down(0)
+
+        return min_val
+
+    def peek(self) -> int:
+        """查看堆顶元素"""
+        if not self.heap:
+            raise IndexError("peek from empty heap")
+        return self.heap[0]
+
+    def __len__(self) -> int:
+        return len(self.heap)
+
+    def is_empty(self) -> bool:
+        return len(self.heap) == 0
+```
+
+### 堆操作详解
+
+#### 插入元素（上浮 Sift Up）
+
+1. 将要插入的元素放到数组最后
+2. 比较该元素与其父节点，如果小于父节点则交换
+3. 重复步骤2，直到该元素大于等于父节点或到达根节点
+
+**时间复杂度**：$O(\log n)$，最坏情况需要从叶子节点上浮到根节点。
+
+#### 删除堆顶（下沉 Sift Down）
+
+1. 将堆顶元素（最小值）保存，用于返回
+2. 将数组最后一个元素移到堆顶位置
+3. 比较该元素与其左右子节点，如果大于较小的子节点则交换
+4. 重复步骤3，直到该元素小于等于两个子节点或到达叶子节点
+
+**时间复杂度**：$O(\log n)$，最坏情况需要从根节点下沉到叶子节点。
+
+#### 建堆（Heapify）
+
+对一个无序数组，从最后一个非叶子节点开始，自底向下执行下沉操作。
+
+```python
+def _heapify(self):
+    """将无序数组堆化，O(n)"""
+    # 从最后一个非叶子节点开始下沉
+    # 最后一个非叶子节点的索引是 (n-2)//2 = n//2 - 1
+    for i in range(len(self.heap) // 2 - 1, -1, -1):
+        self._sift_down(i)
+```
+
+**为什么时间复杂度是 $O(n)$ 而不是 $O(n \log n)$？**
+
+虽然看起来要对 $n/2$ 个节点各做一次下沉（$O(\log n)$），但实际上大部分节点的高度很小。通过数学推导可得，建堆的总时间复杂度为 $O(n)$。
 
 ### heapq模块
 
