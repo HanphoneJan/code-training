@@ -108,7 +108,7 @@ if __name__ == "__main__":
 - Large input cases (if relevant)
 
 ### 4. Create Markdown Documentation
-一般的leetcode题解文档位于项目根目录/docs/problems/leetcode/*.md，建议参考已有文档
+一般的leetcode题解文档位于项目根目录/docs/problems/lc/*.md，建议参考已有文档
 **Document structure (follow exactly):**
 
 ```markdown
