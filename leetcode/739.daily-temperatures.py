@@ -10,9 +10,35 @@
 
 # @lcpr-template-end
 # @lc code=start
+# 单调栈
+# 如何判断什么时候用单调栈
+# 以下两种写法都应该掌握
+from typing import List
 class Solution:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
-        
+        n = len(temperatures)
+        ans = [0] * n
+        st = []
+        for i in range(n - 1, -1, -1):
+            t = temperatures[i]
+            while st and t >= temperatures[st[-1]]:
+                st.pop()
+            if st:
+                ans[i] = st[-1] - i
+            st.append(i)
+        return ans
+
+    # def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+    #     n = len(temperatures)
+    #     ans = [0] * n
+    #     st = []  # todolist
+    #     for i, t in enumerate(temperatures):
+    #         while st and t > temperatures[st[-1]]:
+    #             j = st.pop()
+    #             ans[j] = i - j
+    #         st.append(i)
+    #     return ans
+
 # @lc code=end
 
 
